@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlocks from '../components/CodeBlocks.astro';
 
 export async function getStaticPaths() {
   const pages = await getCollection('pages');
@@ -19,5 +20,6 @@ const { Content } = await render(page);
       {page.data.description && <p class="article-description">{page.data.description}</p>}
     </header>
     <div class="prose"><Content /></div>
+    <CodeBlocks />
   </article>
 </BaseLayout>

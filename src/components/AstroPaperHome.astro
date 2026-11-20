@@ -1,0 +1,36 @@
+---
+// Adapted from AstroPaper's MIT-licensed index and Card components.
+// Attribution and license: third-party-licenses/astro-paper.txt
+import site from '../data/site.json';
+import { formatDate, getPublishedPosts } from '../utils/posts';
+
+const posts = await getPublishedPosts();
+---
+
+<div class="astro-paper-home">
+  <section class="astro-paper-hero" aria-labelledby="astro-paper-title">
+    <h1 id="astro-paper-title">{site.headline}</h1>
+    <a href="/rss.xml" class="astro-paper-rss" aria-label="RSS 피드" title="RSS 피드">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none" />
+        <path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16" />
+      </svg>
+    </a>
+    <p>{site.introduction}</p>
+  </section>
+  <section class="astro-paper-recent" aria-labelledby="astro-paper-recent-title">
+    <h2 id="astro-paper-recent-title">최근 글</h2>
+    {posts.length ? (
+      <ul>
+        {posts.slice(0, 5).map((post) => (
+          <li>
+            <a href={`/blog/${post.id}/`}><h3>{post.data.title}</h3></a>
+            <p class="astro-paper-date"><time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time></p>
+            {post.data.description && <p>{post.data.description}</p>}
+          </li>
+        ))}
+      </ul>
+    ) : <p>아직 공개된 글이 없습니다.</p>}
+    <div class="astro-paper-all"><a href="/blog/">모든 글 보기</a></div>
+  </section>
+</div>

@@ -1,0 +1,54 @@
+---
+import '../styles/code.css';
+---
+
+<script>
+  for (const pre of document.querySelectorAll<HTMLPreElement>('.prose pre')) {
+    const code = pre.querySelector('code');
+    if (!code || pre.parentElement?.classList.contains('code-block')) continue;
+
+    const language = pre.dataset.language?.trim();
+    const label = language && language !== 'plaintext' ? language.toUpperCase() : 'TEXT';
+    const container = document.createElement('div');
+    const toolbar = document.createElement('div');
+    const languageLabel = document.createElement('span');
+    const copy = document.createElement('button');
+    const status = document.createElement('span');
+
+    container.className = 'code-block';
+    toolbar.className = 'code-block-toolbar';
+    languageLabel.className = 'code-block-language';
+    languageLabel.textContent = label;
+    copy.className = 'code-block-copy';
+    copy.type = 'button';
+    copy.textContent = '복사';
+    copy.setAttribute('aria-label', `${label} 코드 복사`);
+    status.className = 'code-block-status';
+    status.setAttribute('aria-live', 'polite');
+    status.setAttribute('role', 'status');
+
+    if (!pre.hasAttribute('tabindex')) pre.tabIndex = 0;
+    pre.setAttribute('aria-label', `${label} 코드`);
+    toolbar.append(languageLabel, copy, status);
+    pre.before(container);
+    container.append(toolbar, pre);
+
+    let resetTimer: number | undefined;
+    copy.addEventListener('click', async () => {
+      try {
+        if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+        await navigator.clipboard.writeText(code.textContent ?? '');
+        copy.textContent = '복사됨';
+        status.textContent = '코드를 복사했습니다.';
+      } catch {
+        copy.textContent = '복사 실패';
+        status.textContent = '복사하지 못했습니다. 코드를 직접 선택해 복사해 주세요.';
+      }
+      window.clearTimeout(resetTimer);
+      resetTimer = window.setTimeout(() => {
+        copy.textContent = '복사';
+        status.textContent = '';
+      }, 2500);
+    });
+  }
+</script>

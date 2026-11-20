@@ -1,0 +1,29 @@
+---
+import '../styles/post-media.css';
+
+interface Props {
+  title: string;
+  gallery?: string[] | null;
+  audioUrl?: string | null;
+}
+
+const { title, gallery, audioUrl } = Astro.props;
+const images = (gallery ?? []).filter((image) => image.trim() !== '');
+---
+
+{images.length > 0 && (
+  <div class:list={['post-gallery', { 'post-gallery-single': images.length === 1 }]} aria-label="글 사진">
+    {images.map((image, index) => (
+      <figure><img src={image} alt={`${title} 사진 ${index + 1}`} loading="lazy" /></figure>
+    ))}
+  </div>
+)}
+
+{audioUrl && (
+  <figure class="post-audio">
+    <figcaption>오디오</figcaption>
+    <audio controls preload="metadata" src={audioUrl}>
+      브라우저에서 오디오를 재생할 수 없습니다. <a href={audioUrl}>오디오 파일 열기</a>
+    </audio>
+  </figure>
+)}

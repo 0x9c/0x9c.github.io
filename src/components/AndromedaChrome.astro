@@ -1,0 +1,99 @@
+---
+import site from '../data/site.json';
+import navigation from '../data/navigation.json';
+import '../styles/andromeda.css';
+
+const width = ['400', '450', '500', '540'].includes(String(site.andromedaPostWidth)) ? site.andromedaPostWidth : '500';
+const fontSize = Math.min(24, Math.max(14, Number(site.andromedaFontSize) || 15));
+const family = site.andromedaFontFamily === 'serif' ? 'Georgia, serif' : site.andromedaFontFamily === 'mono' ? 'monospace' : 'system-ui, sans-serif';
+const details = Array.isArray(site.andromedaDetails) ? site.andromedaDetails as { label: string; value: string }[] : [];
+---
+
+<div class:list={['andromeda-theme', { 'andromeda-sidebar-right': site.andromedaSidebarSide === 'right' }]} style={`--andromeda-post-width:${width}px;--andromeda-font-size:${fontSize}px;--andromeda-font-family:${family}`}>
+  <div class="andromeda-shell">
+    <header class="andromeda-header">
+      <form class="andromeda-search" data-andromeda-search role="search" action="/">
+        <span aria-hidden="true">⌕</span><input type="search" name="q" placeholder="검색어를 입력하세요" aria-label="글 검색" />
+      </form>
+      <nav class="andromeda-header-actions" aria-label="빠른 메뉴">
+        <a href="/" aria-label="홈" title="홈">⌂</a>
+        <a href="/blog/" aria-label="모든 글" title="모든 글">▤</a>
+        <button type="button" data-andromeda-open aria-expanded="false" aria-controls="andromeda-drawer" aria-label="메뉴 열기" title="메뉴 열기">☰</button>
+      </nav>
+    </header>
+    <div class="andromeda-layout">
+      <aside class="andromeda-profile">
+        <div class="andromeda-banner" style={site.andromedaBanner ? `background-image:url('${site.andromedaBanner.replace(/['()\\]/g, '')}')` : undefined}></div>
+        <div class="andromeda-profile-content">
+          <a class="andromeda-avatar" href="/" aria-label={`${site.title} 홈`}>{site.andromedaAvatar ? <img src={site.andromedaAvatar} alt="" /> : site.title.slice(0, 1)}</a>
+          <h1>{site.title}</h1><p class="andromeda-handle">✦ &nbsp;{site.headline}</p>
+          <p class="andromeda-profile-description">{site.description}</p>
+          <nav class="andromeda-profile-nav" aria-label="블로그 메뉴">{navigation.items.map((item) => <a href={item.href}>{item.label}</a>)}</nav>
+        </div>
+      </aside>
+      <main id="content" class="andromeda-main"><slot /></main>
+    </div>
+    <footer class="andromeda-footer">© {new Date().getFullYear()} {site.title} · <a href="/rss.xml">RSS</a> · <a href="/themes/">테마</a> · <a href="https://app.pagescms.org/" target="_blank" rel="noopener noreferrer">관리</a> · <a href="https://kosmique.tumblr.com/" target="_blank" rel="noopener noreferrer">Andrômeda 디자인</a></footer>
+  </div>
+  <div class="andromeda-overlay" data-andromeda-overlay hidden></div>
+  <aside class="andromeda-drawer" id="andromeda-drawer" aria-label="블로그 메뉴" aria-hidden="true" inert>
+    <div class="andromeda-drawer-banner" style={site.andromedaBanner ? `background-image:url('${site.andromedaBanner.replace(/['()\\]/g, '')}')` : undefined}></div>
+    <button type="button" class="andromeda-close" data-andromeda-close aria-label="메뉴 닫기">×</button>
+    <div class="andromeda-drawer-content">
+      <a class="andromeda-avatar" href="/">{site.andromedaAvatar ? <img src={site.andromedaAvatar} alt="" /> : site.title.slice(0, 1)}</a>
+      <h2>{site.title}</h2><p class="andromeda-handle">{site.headline}</p><p>{site.description}</p>
+      {details.length > 0 && <dl>{details.map((detail) => <div><dt>{detail.label}</dt><dd>{detail.value}</dd></div>)}</dl>}
+      <nav aria-label="전체 메뉴"><a href="/">홈</a>{navigation.items.map((item) => <a href={item.href}>{item.label}</a>)}<a href="/rss.xml">RSS</a></nav>
+    </div>
+  </aside>
+</div>
+
+<script>
+  const drawer = document.querySelector<HTMLElement>('.andromeda-drawer');
+  const overlay = document.querySelector<HTMLElement>('[data-andromeda-overlay]');
+  const openButton = document.querySelector<HTMLButtonElement>('[data-andromeda-open]');
+  const closeButton = document.querySelector<HTMLButtonElement>('[data-andromeda-close]');
+  function setDrawer(open: boolean) {
+    if (!drawer || !overlay || !openButton) return;
+    drawer.classList.toggle('is-open', open);
+    drawer.inert = !open;
+    drawer.setAttribute('aria-hidden', String(!open));
+    overlay.hidden = !open;
+    openButton.setAttribute('aria-expanded', String(open));
+    if (open) closeButton?.focus(); else openButton.focus();
+  }
+  openButton?.addEventListener('click', () => setDrawer(true));
+  closeButton?.addEventListener('click', () => setDrawer(false));
+  overlay?.addEventListener('click', () => setDrawer(false));
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && drawer?.classList.contains('is-open')) setDrawer(false); });
+
+  const form = document.querySelector<HTMLFormElement>('[data-andromeda-search]');
+  const input = form?.querySelector<HTMLInputElement>('input');
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-andromeda-post]'));
+  const empty = document.querySelector<HTMLElement>('[data-andromeda-search-empty]');
+  const pagination = document.querySelector<HTMLElement>('[data-andromeda-pagination]');
+  const prev = document.querySelector<HTMLButtonElement>('[data-andromeda-prev]');
+  const next = document.querySelector<HTMLButtonElement>('[data-andromeda-next]');
+  const pageLabel = document.querySelector<HTMLElement>('[data-andromeda-page]');
+  let page = 1;
+  function updateFeed() {
+    const term = input?.value.trim().toLocaleLowerCase() || '';
+    const matching = cards.filter((card) => (card.textContent || '').toLocaleLowerCase().includes(term));
+    const pages = Math.max(1, Math.ceil(matching.length / 6));
+    page = Math.min(page, pages);
+    cards.forEach((card) => { card.hidden = !matching.slice((page - 1) * 6, page * 6).includes(card); });
+    if (empty) empty.hidden = matching.length > 0 || !term;
+    if (pagination) pagination.hidden = pages <= 1;
+    if (pageLabel) pageLabel.textContent = `${page} / ${pages}`;
+    if (prev) prev.disabled = page <= 1;
+    if (next) next.disabled = page >= pages;
+  }
+  if (input) input.value = new URLSearchParams(window.location.search).get('q') || '';
+  if (cards.length) {
+    form?.addEventListener('submit', (event) => { event.preventDefault(); page = 1; updateFeed(); });
+    input?.addEventListener('input', () => { page = 1; updateFeed(); });
+    prev?.addEventListener('click', () => { page--; updateFeed(); });
+    next?.addEventListener('click', () => { page++; updateFeed(); });
+    updateFeed();
+  }
+</script>

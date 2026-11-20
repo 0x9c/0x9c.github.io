@@ -1,0 +1,35 @@
+---
+// Adapted from the MIT-licensed official Astro Blog starter; see
+// third-party-licenses/astro-blog-starter.txt for attribution and licenses.
+import site from '../data/site.json';
+import { formatDate, getPublishedPosts } from '../utils/posts';
+
+const posts = await getPublishedPosts();
+---
+
+<div class="astro-starter-home">
+  <section class="astro-starter-intro" aria-labelledby="astro-starter-title">
+    <h1 id="astro-starter-title">{site.headline}</h1>
+    <p>{site.introduction}</p>
+  </section>
+
+  <section class="astro-starter-posts" aria-labelledby="astro-starter-recent">
+    <div class="astro-starter-section-heading">
+      <h2 id="astro-starter-recent">최근 글</h2>
+      <a href="/blog/">모든 글 보기</a>
+    </div>
+    {posts.length ? (
+      <ul class="astro-starter-grid">
+        {posts.slice(0, 5).map((post) => (
+          <li>
+            <a href={`/blog/${post.id}/`}>
+              {post.data.cover && <img src={post.data.cover} alt="" loading="lazy" />}
+              <h3 class="astro-starter-title">{post.data.title}</h3>
+              <p class="astro-starter-date"><time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time></p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : <p>아직 공개된 글이 없습니다.</p>}
+  </section>
+</div>

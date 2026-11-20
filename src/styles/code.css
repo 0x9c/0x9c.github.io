@@ -1,0 +1,46 @@
+.prose .code-block {
+  overflow: hidden;
+  margin: 2rem 0;
+  border: 1px solid #465361;
+  border-radius: 10px;
+  background: #24292e;
+  color: #e1e4e8;
+}
+
+.code-block-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 42px;
+  padding: .35rem .75rem .35rem 1rem;
+  border-bottom: 1px solid #465361;
+  background: #1c2128;
+}
+
+.code-block-language {
+  overflow: hidden;
+  color: #c2ccd6;
+  font: 600 .75rem/1.4 ui-monospace, Consolas, monospace;
+  letter-spacing: .06em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.code-block-copy {
+  min-height: 32px;
+  padding: .2rem .65rem;
+  border: 1px solid #66788b;
+  border-radius: 5px;
+  background: transparent;
+  color: #f4f7fa;
+  cursor: pointer;
+  font-size: .8rem;
+  line-height: 1.4;
+}
+
+.code-block-copy:hover { background: #35404b; }
+.code-block-copy:focus-visible { outline: 2px solid #a6e3cf; outline-offset: 2px; }
+.prose .code-block pre { margin: 0; padding: 1rem; border-radius: 0; font-size: .9rem; line-height: 1.65; }
+.prose .code-block pre:focus-visible { outline: 2px solid #a6e3cf; outline-offset: -2px; }
+.code-block-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

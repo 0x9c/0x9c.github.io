@@ -2,7 +2,11 @@
 import navigation from '../data/navigation.json';
 import site from '../data/site.json';
 import { findTheme, type ThemeId } from '../utils/themes';
+import AndromedaChrome from '../components/AndromedaChrome.astro';
 import '../styles/global.css';
+import '../styles/astro-starter.css';
+import '../styles/astro-paper.css';
+import '../styles/andromeda.css';
 
 interface Props {
   title?: string;
@@ -41,6 +45,7 @@ const path = Astro.url.pathname;
   </head>
   <body>
     <a class="skip-link" href="#content">본문으로 건너뛰기</a>
+    {theme.id === 'andromeda' ? <AndromedaChrome><slot /></AndromedaChrome> : <>
     <header class="site-header">
       <div class="shell header-inner">
         <a class="brand" href="/" aria-label={`${site.title} 홈`}>
@@ -71,5 +76,6 @@ const path = Astro.url.pathname;
       </div>
       <div class="shell footer-bottom">© {new Date().getFullYear()} {site.title}</div>
     </footer>
+    </>}
   </body>
 </html>

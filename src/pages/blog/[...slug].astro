@@ -1,6 +1,8 @@
 ---
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CodeBlocks from '../../components/CodeBlocks.astro';
+import PostMedia from '../../components/PostMedia.astro';
 import { formatDate, getPublishedPosts } from '../../utils/posts';
 
 export async function getStaticPaths() {
@@ -22,7 +24,9 @@ const { Content } = await render(post);
       <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
     </header>
     {post.data.cover && <img class="article-cover" src={post.data.cover} alt={post.data.coverAlt || ''} />}
+    <PostMedia title={post.data.title} gallery={post.data.gallery} audioUrl={post.data.audioUrl} />
     <div class="prose"><Content /></div>
+    <CodeBlocks />
     <div class="article-end"><span>✳</span><a href="/blog/">다른 기록 보기</a></div>
   </article>
 </BaseLayout>

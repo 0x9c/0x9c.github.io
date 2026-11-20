@@ -70,7 +70,7 @@
   --footer-bg: #f7f8fa;
 }
 
-[data-theme='night'] {
+[data-theme='night'], [data-theme='andromeda'] {
   color-scheme: dark;
   --page-bg: #101923;
   --ink: #e5edf0;
@@ -239,6 +239,10 @@ html[data-theme='night'] .button { border-radius: 999px; }
 .theme-sample[data-theme='paper'] .sample-hero i { border-radius: 0; }
 .theme-sample[data-theme='night'] .sample-hero { border: 1px solid var(--border); }
 .theme-sample[data-theme='night'] .sample-hero i { border-radius: 999px; }
+.theme-sample[data-theme='astro-blog'] { --page-bg: #fff; --ink: #222939; --heading: #0f1219; --muted: #60739f; --accent: #2337ff; --eyebrow: #58699b; --border: #e5e9f0; --border-soft: #e5e9f0; --hero-bg: #f3f5fa; --button-bg: #2337ff; }
+.theme-sample[data-theme='astro-paper'] { --page-bg: #fdfdfd; --ink: #292a2d; --heading: #1b1c1e; --muted: #5a6170; --accent: #006cac; --eyebrow: #006cac; --border: #e0e0e0; --border-soft: #e0e0e0; --hero-bg: #f7f8fa; --button-bg: #006cac; }
+.theme-sample[data-theme='andromeda'] { --page-bg: #121317; --ink: #eeeef2; --heading: #fafafd; --muted: #bbc0ca; --accent: #db9bb9; --eyebrow: #e4a8c6; --border: #303139; --border-soft: #303139; --hero-bg: #1d1e24; --button-bg: #d19bb9; color-scheme: dark; }
+.theme-sample[data-theme='andromeda'] .sample-hero { border: 1px solid var(--border); }
 .theme-option-copy { padding: 20px; border-top: 1px solid var(--border); }
 .theme-option-copy h2 { margin: 0; color: var(--heading); font-size: 1.13rem; letter-spacing: -.035em; }
 .theme-option-copy p { min-height: 3.4em; margin: 8px 0 15px; color: var(--muted); font-size: .88rem; word-break: keep-all; }

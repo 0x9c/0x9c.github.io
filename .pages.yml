@@ -39,6 +39,16 @@ content:
         label: 대표 사진 설명
         description: 사진을 볼 수 없는 방문자를 위해 이미지의 내용을 설명해 주세요.
         type: string
+      - name: gallery
+        label: 사진 모음
+        description: 여러 장의 사진을 함께 보여줍니다.
+        type: image
+        options:
+          multiple: true
+      - name: audioUrl
+        label: 오디오 주소
+        description: 직접 재생 가능한 오디오 파일의 HTTPS 주소를 입력합니다.
+        type: string
       - name: draft
         label: 임시 저장
         description: 켜두면 사이트에 표시되지 않습니다.
@@ -112,6 +122,12 @@ content:
               label: 클래식 페이퍼
             - name: night
               label: 미드나이트
+            - name: astro-blog
+              label: Astro 공식 블로그
+            - name: astro-paper
+              label: AstroPaper
+            - name: andromeda
+              label: 안드로메다
       - name: title
         label: 블로그 이름
         type: string
@@ -128,3 +144,55 @@ content:
         label: 첫 화면 소개
         type: text
         required: true
+      - name: andromedaAvatar
+        label: 안드로메다 프로필 사진
+        type: image
+      - name: andromedaBanner
+        label: 안드로메다 배너 사진
+        type: image
+      - name: andromedaSidebarSide
+        label: 안드로메다 사이드바 위치
+        type: select
+        default: left
+        options:
+          values:
+            - name: left
+              label: 왼쪽
+            - name: right
+              label: 오른쪽
+      - name: andromedaPostWidth
+        label: 안드로메다 글 너비
+        type: select
+        default: '500'
+        options:
+          values: ['400', '450', '500', '540']
+      - name: andromedaFontSize
+        label: 안드로메다 글자 크기 (px)
+        type: number
+        default: 15
+        options:
+          min: 14
+          max: 24
+      - name: andromedaFontFamily
+        label: 안드로메다 글꼴
+        type: select
+        default: sans
+        options:
+          values:
+            - name: sans
+              label: 고딕
+            - name: serif
+              label: 명조
+            - name: mono
+              label: 고정폭
+      - name: andromedaDetails
+        label: 안드로메다 프로필 정보
+        type: object
+        list: true
+        fields:
+          - name: label
+            label: 항목 이름
+            type: string
+          - name: value
+            label: 내용
+            type: string

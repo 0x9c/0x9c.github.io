@@ -17,5 +17,5 @@ const { theme } = Astro.props;
       <div><a href="/themes/">다른 테마 보기</a><a href="https://app.pagescms.org/0x9c/0x9c.github.io/main/file/site">관리 화면에서 적용</a></div>
     </div>
   </div>
-  <HomeContent />
+  <HomeContent theme={theme.id} />
 </BaseLayout>

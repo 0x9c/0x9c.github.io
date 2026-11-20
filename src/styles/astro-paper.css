@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500;600;700&display=swap');
+
+/* Adapted from AstroPaper's MIT-licensed theme and home page.
+   See third-party-licenses/astro-paper.txt for copyright and license. */
+html[data-theme='astro-paper'] {
+  color-scheme: light;
+  --page-bg: #fdfdfd;
+  --ink: #282728;
+  --heading: #282728;
+  --strong: #00578d;
+  --muted: #596475;
+  --eyebrow: #006cac;
+  --accent: #006cac;
+  --link: #006cac;
+  --link-hover: #004d80;
+  --prose: #282728;
+  --border: #dedede;
+  --border-soft: #ece9e9;
+  --hero-bg: #fdfdfd;
+  --art-bg: #e6edf1;
+  --art-grid: #becfd7;
+  --art-orbit: rgba(0, 108, 172, .3);
+  --art-disc: #cfe2ed;
+  --art-ink: #006cac;
+  --art-label: #496f80;
+  --brand-bg: #006cac;
+  --brand-ink: #fff;
+  --button-bg: #006cac;
+  --button-hover: #004d80;
+  --button-ink: #fff;
+  --selection-bg: #d4eaf7;
+  --selection-ink: #282728;
+  --focus: #006cac;
+  --media-bg: #e6e6e6;
+  --code-bg: #e6e6e6;
+  --quote-border: #006cac;
+  --footer-bg: #fdfdfd;
+}
+
+html[data-theme='astro-paper'] body { font-family: 'Google Sans Code', 'Noto Sans KR', monospace; }
+html[data-theme='astro-paper'] .site-header { border: 0; background: var(--page-bg); }
+html[data-theme='astro-paper'] .header-inner { width: min(768px, calc(100% - 2rem)); border-bottom: 1px solid var(--border); }
+html[data-theme='astro-paper'] .brand { font-size: 1.4rem; letter-spacing: -.03em; }
+html[data-theme='astro-paper'] .brand-mark { display: none; }
+html[data-theme='astro-paper'] .main-nav a[aria-current='page'] { box-shadow: none; text-decoration: underline wavy var(--accent); text-underline-offset: 7px; }
+html[data-theme='astro-paper'] .site-footer { background: var(--page-bg); }
+html[data-theme='astro-paper'] .footer-inner, html[data-theme='astro-paper'] .footer-bottom { width: min(768px, calc(100% - 2rem)); }
+
+html[data-theme='astro-paper'] .astro-paper-home { width: min(768px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 5rem; }
+html[data-theme='astro-paper'] .astro-paper-hero { padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); }
+html[data-theme='astro-paper'] .astro-paper-hero h1 { display: inline; margin: 1rem .5rem 1rem 0; color: var(--heading); font-size: clamp(2rem, 5vw, 3rem); line-height: 1.25; letter-spacing: -.05em; word-break: keep-all; }
+html[data-theme='astro-paper'] .astro-paper-hero p { margin: 1.5rem 0 0; color: var(--ink); line-height: 1.8; word-break: keep-all; }
+html[data-theme='astro-paper'] .astro-paper-rss { display: inline-block; color: var(--accent); vertical-align: middle; }
+html[data-theme='astro-paper'] .astro-paper-rss:hover { color: var(--strong); }
+html[data-theme='astro-paper'] .astro-paper-recent { padding: 3rem 0 1.5rem; }
+html[data-theme='astro-paper'] .astro-paper-recent h2 { margin: 0; font-size: 1.5rem; letter-spacing: .02em; }
+html[data-theme='astro-paper'] .astro-paper-recent ul { margin: 0; padding: 0; list-style: none; }
+html[data-theme='astro-paper'] .astro-paper-recent li { margin: 1.5rem 0; }
+html[data-theme='astro-paper'] .astro-paper-recent li a { display: inline-block; color: var(--accent); text-underline-offset: .25rem; }
+html[data-theme='astro-paper'] .astro-paper-recent li a:hover { text-decoration: underline dashed; }
+html[data-theme='astro-paper'] .astro-paper-recent h3 { margin: 0; font-size: 1.125rem; font-weight: 600; }
+html[data-theme='astro-paper'] .astro-paper-recent p { margin: .25rem 0; }
+html[data-theme='astro-paper'] .astro-paper-date { color: var(--muted); font-size: .875rem; font-style: italic; }
+html[data-theme='astro-paper'] .astro-paper-all { margin-top: 2.5rem; text-align: center; }
+html[data-theme='astro-paper'] .astro-paper-all a { color: var(--accent); text-decoration: underline dashed; text-underline-offset: .25rem; }
+
+@media (max-width: 720px) {
+  html[data-theme='astro-paper'] .astro-paper-home { padding-top: 1rem; }
+  html[data-theme='astro-paper'] .astro-paper-hero { padding-top: 1.5rem; }
+}

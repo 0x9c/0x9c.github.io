@@ -2,10 +2,17 @@
 import PostList from './PostList.astro';
 import site from '../data/site.json';
 import { getPublishedPosts } from '../utils/posts';
+import { findTheme, type ThemeId } from '../utils/themes';
+import AstroStarterHome from './AstroStarterHome.astro';
+import AstroPaperHome from './AstroPaperHome.astro';
+import AndromedaHome from './AndromedaHome.astro';
 
+interface Props { theme?: ThemeId }
+const activeTheme = findTheme(Astro.props.theme ?? site.theme).id;
 const posts = await getPublishedPosts();
 ---
 
+{activeTheme === 'astro-blog' ? <AstroStarterHome /> : activeTheme === 'astro-paper' ? <AstroPaperHome /> : activeTheme === 'andromeda' ? <AndromedaHome /> : (
 <div class="shell">
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-copy">
@@ -31,3 +38,4 @@ const posts = await getPublishedPosts();
     <PostList posts={posts.slice(0, 5)} />
   </section>
 </div>
+)}

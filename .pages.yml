@@ -1,0 +1,116 @@
+media:
+  input: public/uploads
+  output: /uploads
+  rename: random
+  categories: [image]
+
+content:
+  - name: posts
+    label: 블로그 글
+    type: collection
+    path: src/content/blog
+    filename: '{year}-{month}-{day}-{hour}-{minute}-{second}.md'
+    view:
+      primary: title
+      fields: [title, pubDate]
+      sort: [pubDate]
+      default:
+        sort: pubDate
+        order: desc
+    fields:
+      - name: title
+        label: 제목
+        type: string
+        required: true
+      - name: description
+        label: 글 소개
+        description: 글 목록과 검색 결과에 표시되는 짧은 설명입니다.
+        type: text
+      - name: pubDate
+        label: 작성일
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: cover
+        label: 대표 사진
+        type: image
+      - name: coverAlt
+        label: 대표 사진 설명
+        description: 사진을 볼 수 없는 방문자를 위해 이미지의 내용을 설명해 주세요.
+        type: string
+      - name: draft
+        label: 임시 저장
+        description: 켜두면 사이트에 표시되지 않습니다.
+        type: boolean
+        default: false
+      - name: body
+        label: 본문
+        type: rich-text
+
+  - name: pages
+    label: 소개 등 일반 페이지
+    type: collection
+    path: src/content/pages
+    filename:
+      template: '{primary}.md'
+      field: create
+    view:
+      primary: title
+    fields:
+      - name: title
+        label: 제목
+        type: string
+        required: true
+      - name: description
+        label: 페이지 소개
+        type: text
+      - name: body
+        label: 본문
+        type: rich-text
+
+  - name: navigation
+    label: 상단 메뉴
+    type: file
+    path: src/data/navigation.json
+    fields:
+      - name: items
+        label: 메뉴 항목
+        description: 항목을 추가하거나 순서를 변경하세요. 예를 들어 소개 페이지 주소는 /about/입니다.
+        type: object
+        list:
+          collapsible:
+            collapsed: false
+            summary: '{label}'
+        fields:
+          - name: label
+            label: 메뉴 이름
+            type: string
+            required: true
+          - name: href
+            label: 연결 주소
+            description: 내부 페이지는 /about/처럼, 외부 페이지는 https://로 시작합니다.
+            type: string
+            required: true
+
+  - name: site
+    label: 블로그 기본 설정
+    type: file
+    path: src/data/site.json
+    fields:
+      - name: title
+        label: 블로그 이름
+        type: string
+        required: true
+      - name: description
+        label: 블로그 소개
+        type: text
+        required: true
+      - name: headline
+        label: 첫 화면 제목
+        type: string
+        required: true
+      - name: introduction
+        label: 첫 화면 소개
+        type: text
+        required: true

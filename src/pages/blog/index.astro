@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getPublishedPosts } from '../../utils/posts';
+
+const posts = await getPublishedPosts();
+---
+
+<BaseLayout title="글" description="차곡차곡 모아둔 기록들입니다.">
+  <div class="shell page-shell">
+    <header class="page-heading">
+      <p class="eyebrow">THE JOURNAL</p>
+      <h1>모든 기록<span class="brand-dot">.</span></h1>
+      <p>생각하고, 배우고, 발견한 것들을 모았습니다.</p>
+    </header>
+    <div class="list-heading"><span>전체 글</span><span>{posts.length}개의 기록</span></div>
+    <PostList posts={posts} />
+  </div>
+</BaseLayout>

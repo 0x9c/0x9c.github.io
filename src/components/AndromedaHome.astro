@@ -10,12 +10,10 @@ const entries = await Promise.all(posts.map(async (post) => ({ post, Content: (a
 ---
 
 <div class="andromeda-feed" data-andromeda-feed>
-  <div class="andromeda-feed-heading"><span><AndromedaIcon name="sparkle" /> {site.title}</span><span>{posts.length}개의 기록</span></div>
   {entries.map(({ post, Content }) => (
     <article class="andromeda-post" data-andromeda-post>
       <div class="andromeda-post-top">
         <a class="andromeda-post-author" href="/">{site.title}</a>
-        <a href={`/blog/${post.id}/`} class="andromeda-post-date">{formatDate(post.data.pubDate)}</a>
       </div>
       {post.data.gallery?.length ? (
         <div class:list={['andromeda-gallery', { 'andromeda-gallery-single': post.data.gallery.length === 1 }]}>
@@ -29,6 +27,9 @@ const entries = await Promise.all(posts.map(async (post) => ({ post, Content: (a
         {post.data.description && <p class="andromeda-post-description">{post.data.description}</p>}
         {post.data.audioUrl && <audio controls preload="none" src={post.data.audioUrl}>브라우저에서 오디오 재생을 지원하지 않습니다.</audio>}
         <div class="prose andromeda-prose"><Content /></div>
+      </div>
+      <div class="andromeda-post-footer">
+        <a href={`/blog/${post.id}/`} class="andromeda-post-date">{formatDate(post.data.pubDate)}</a>
         <a class="andromeda-read-link" href={`/blog/${post.id}/`}>글 자세히 보기</a>
       </div>
     </article>

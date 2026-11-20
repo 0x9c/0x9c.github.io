@@ -3,13 +3,14 @@ import { render } from 'astro:content';
 import site from '../data/site.json';
 import { formatDate, getPublishedPosts } from '../utils/posts';
 import CodeBlocks from './CodeBlocks.astro';
+import AndromedaIcon from './AndromedaIcon.astro';
 
 const posts = await getPublishedPosts();
 const entries = await Promise.all(posts.map(async (post) => ({ post, Content: (await render(post)).Content })));
 ---
 
 <div class="andromeda-feed" data-andromeda-feed>
-  <div class="andromeda-feed-heading"><span>✦ &nbsp;{site.title}</span><span>{posts.length}개의 기록</span></div>
+  <div class="andromeda-feed-heading"><span><AndromedaIcon name="sparkle" /> {site.title}</span><span>{posts.length}개의 기록</span></div>
   {entries.map(({ post, Content }) => (
     <article class="andromeda-post" data-andromeda-post>
       <div class="andromeda-post-top">
@@ -35,7 +36,7 @@ const entries = await Promise.all(posts.map(async (post) => ({ post, Content: (a
   {!posts.length && <p class="andromeda-empty">아직 작성된 글이 없습니다.</p>}
   <p class="andromeda-empty" data-andromeda-search-empty hidden>검색 결과가 없습니다.</p>
   <div class="andromeda-pagination" data-andromeda-pagination hidden>
-    <button type="button" data-andromeda-prev>이전</button><span data-andromeda-page></span><button type="button" data-andromeda-next>다음</button>
+    <button type="button" data-andromeda-prev><AndromedaIcon name="arrow-left" /> 이전</button><span data-andromeda-page></span><button type="button" data-andromeda-next>다음 <AndromedaIcon name="arrow-right" /></button>
   </div>
 </div>
 <CodeBlocks />

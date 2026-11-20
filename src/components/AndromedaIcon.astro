@@ -1,0 +1,19 @@
+---
+interface Props {
+  name: 'search' | 'home' | 'archive' | 'menu' | 'close' | 'at' | 'arrow-left' | 'arrow-right' | 'sparkle';
+}
+const { name } = Astro.props;
+---
+
+<!-- Outline icons from Tabler Icons, MIT license; see third-party-licenses/tabler-icons.txt. -->
+<svg class:list={['andromeda-icon', `andromeda-icon--${name}`]} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {name === 'search' && <><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></>}
+  {name === 'home' && <><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M10 12h4v4h-4l0 -4" /></>}
+  {name === 'archive' && <><path d="M12 8l0 4l2 2" /><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" /></>}
+  {name === 'menu' && <><path d="M4 4h6v6h-6l0 -6" /><path d="M14 4h6v6h-6l0 -6" /><path d="M4 14h6v6h-6l0 -6" /><path d="M14 17a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /></>}
+  {name === 'close' && <><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></>}
+  {name === 'at' && <><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0v-1.5a9 9 0 1 0 -5.5 8.28" /></>}
+  {name === 'arrow-left' && <><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></>}
+  {name === 'arrow-right' && <><path d="M5 12l14 0" /><path d="M13 18l6 -6" /><path d="M13 6l6 6" /></>}
+  {name === 'sparkle' && <path d="M12 2.5c.55 5.2 2.3 7.6 7.5 9.5-5.2.55-6.95 2.3-7.5 9.5C10.1 16.3 8.35 14.55 3.5 12 8.7 10.1 10.45 7.7 12 2.5Z" fill="currentColor" stroke="none" />}
+</svg>

@@ -9,7 +9,10 @@ html[data-theme='andromeda'] { background: #101115; color-scheme: dark; }
 .andromeda-shell { width:min(100% - 40px, calc(var(--andromeda-post-width) + 355px)); margin:auto; padding:42px 0; }
 .andromeda-header { display:flex; align-items:center; gap:20px; padding:14px 18px; margin-bottom:22px; border-radius:4px; background:var(--a-card); }
 .andromeda-search { flex:1; display:flex; align-items:center; gap:10px; min-width:0; padding:7px 13px; color:var(--a-muted); background:#111216; border-radius:4px; }
-.andromeda-search span { font-size:22px; line-height:1; }
+.andromeda-icon { display:inline-block; width:1em; height:1em; flex:none; vertical-align:-.125em; }
+.andromeda-search .andromeda-icon { width:16px; height:16px; }
+.andromeda-header-actions .andromeda-icon, .andromeda-close .andromeda-icon { width:17px; height:17px; }
+.andromeda-icon--sparkle { width:11px; height:11px; margin-right:.25em; }
 .andromeda-search input { width:100%; border:0; outline:0; background:transparent; color:var(--a-text); font-size:.85em; }
 .andromeda-header-actions { display:flex; align-items:center; gap:8px; }
 .andromeda-header-actions a, .andromeda-header-actions button { display:grid; place-items:center; width:32px; height:32px; padding:0; border:1px solid #393a42; border-radius:4px; background:transparent; color:#c9c9d1; font-size:17px; line-height:1; }
@@ -69,7 +72,7 @@ html[data-theme='andromeda'] { background: #101115; color-scheme: dark; }
 .andromeda-drawer { position:fixed; z-index:91; top:0; bottom:0; left:0; width:min(340px, 88vw); overflow-y:auto; transform:translateX(-100%); transition:transform .25s ease; background:var(--a-card); box-shadow:0 0 40px #0008; }
 .andromeda-drawer.is-open { transform:translateX(0); }
 .andromeda-drawer-banner { height:150px; }
-.andromeda-close { position:absolute; top:12px; right:14px; width:34px; height:34px; border:0; border-radius:50%; background:#16171bdd; color:white; font-size:24px; line-height:1; }
+.andromeda-close { position:absolute; top:12px; right:14px; display:grid; place-items:center; width:34px; height:34px; padding:0; border:0; border-radius:50%; background:#16171bdd; color:white; font-size:24px; line-height:1; }
 .andromeda-drawer-content { padding:0 26px 35px; }
 .andromeda-drawer-content>p:not(.andromeda-handle) { color:#b8b9c2; font-size:.86em; }
 .andromeda-drawer dl { margin:22px 0; font-size:.82em; }

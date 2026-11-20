@@ -180,7 +180,7 @@ content:
         options:
           values:
             - name: sans
-              label: 고딕
+              label: 고딕 (원본 Libre Franklin)
             - name: serif
               label: 명조
             - name: mono

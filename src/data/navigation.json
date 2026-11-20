@@ -1,6 +1,12 @@
 {
   "items": [
-    { "label": "글", "href": "/blog/" },
-    { "label": "소개", "href": "/about/" }
+    {
+      "label": "글",
+      "href": "/"
+    },
+    {
+      "label": "소개",
+      "href": "/about/"
+    }
   ]
 }

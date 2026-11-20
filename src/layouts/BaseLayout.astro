@@ -1,15 +1,19 @@
 ---
 import navigation from '../data/navigation.json';
 import site from '../data/site.json';
+import { findTheme, type ThemeId } from '../utils/themes';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
   image?: string | null;
+  theme?: ThemeId;
+  noindex?: boolean;
 }
 
-const { title, description = site.description, image } = Astro.props;
+const { title, description = site.description, image, theme: previewTheme, noindex = false } = Astro.props;
+const theme = findTheme(previewTheme ?? site.theme);
 const pageTitle = title ? `${title} | ${site.title}` : site.title;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const socialImage = image && Astro.site ? new URL(image, Astro.site).href : undefined;
@@ -17,18 +21,19 @@ const path = Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-theme={theme.id}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     {socialImage && <meta property="og:image" content={socialImage} />}
-    <meta name="theme-color" content="#f7faf9" />
+    <meta name="theme-color" content={theme.color} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title={`${site.title} RSS`} href="/rss.xml" />
@@ -58,6 +63,7 @@ const path = Astro.url.pathname;
           <p>{site.description}</p>
         </div>
         <div class="footer-links">
+          <a href="/themes/">테마 미리보기</a>
           <a href="/rss.xml">RSS</a>
           <a href="https://github.com/0x9c" target="_blank" rel="noopener noreferrer">GitHub</a>
           <a href="https://app.pagescms.org/" target="_blank" rel="noopener noreferrer">관리</a>

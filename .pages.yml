@@ -98,6 +98,20 @@ content:
     type: file
     path: src/data/site.json
     fields:
+      - name: theme
+        label: 블로그 테마
+        description: '미리보기: https://blog.rom.kr/themes/ — 저장하면 새 테마가 자동 배포됩니다.'
+        type: select
+        required: true
+        default: garden
+        options:
+          values:
+            - name: garden
+              label: 그린 저널 (기본)
+            - name: paper
+              label: 클래식 페이퍼
+            - name: night
+              label: 미드나이트
       - name: title
         label: 블로그 이름
         type: string

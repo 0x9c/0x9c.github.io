@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { themes } from '../../utils/themes';
+---
+
+<BaseLayout title="테마 미리보기" description="블로그에 적용할 수 있는 테마를 미리 확인하세요." noindex>
+  <div class="shell page-shell theme-gallery-page">
+    <header class="page-heading">
+      <p class="eyebrow">FIND YOUR STYLE</p>
+      <h1>테마 미리보기<span class="brand-dot">.</span></h1>
+      <p>테마를 눌러 블로그 첫 화면을 미리 보세요. 적용은 관리 화면에서 할 수 있습니다.</p>
+    </header>
+    <div class="theme-gallery">
+      {themes.map((theme) => (
+        <a class="theme-option" href={`/themes/${theme.id}/`}>
+          <div class="theme-sample" data-theme={theme.id} aria-hidden="true">
+            <div class="sample-nav"><strong>0x9c<span>.</span></strong><span>글 &nbsp; 소개</span></div>
+            <div class="sample-hero">
+              <span>A PERSONAL JOURNAL</span>
+              <strong>생각을 모아,<br />기록으로.</strong>
+              <i></i>
+            </div>
+            <div class="sample-lines"><span></span><span></span><span></span></div>
+          </div>
+          <div class="theme-option-copy"><h2>{theme.name}</h2><p>{theme.description}</p><span>미리보기</span></div>
+        </a>
+      ))}
+    </div>
+    <p class="theme-gallery-help">적용하려면 <a href="https://app.pagescms.org/0x9c/0x9c.github.io/main/file/site">관리 화면의 블로그 기본 설정</a>에서 테마를 선택하고 저장하세요.</p>
+  </div>
+</BaseLayout>

@@ -1,0 +1,33 @@
+---
+import PostList from './PostList.astro';
+import site from '../data/site.json';
+import { getPublishedPosts } from '../utils/posts';
+
+const posts = await getPublishedPosts();
+---
+
+<div class="shell">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="status-dot"></span> A PERSONAL JOURNAL</p>
+      <h1 id="hero-title">{site.headline}</h1>
+      <p class="hero-intro">{site.introduction}</p>
+      <a class="button" href="/blog/">기록 둘러보기</a>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <span class="art-orbit art-orbit-one"></span>
+      <span class="art-orbit art-orbit-two"></span>
+      <span class="art-star">✳</span>
+      <span class="art-label">COLLECTING<br />LITTLE THOUGHTS</span>
+      <span class="art-index">0x9c / JOURNAL</span>
+    </div>
+  </section>
+
+  <section class="recent-section" aria-labelledby="recent-title">
+    <div class="section-heading">
+      <div><p class="eyebrow">THE LATEST</p><h2 id="recent-title">최근 기록<span class="brand-dot">.</span></h2></div>
+      <a class="section-link" href="/blog/">모든 글 보기</a>
+    </div>
+    <PostList posts={posts.slice(0, 5)} />
+  </section>
+</div>

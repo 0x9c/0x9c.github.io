@@ -84,7 +84,7 @@ async function githubApi(path, token) {
       Accept: 'application/vnd.github+json',
       'User-Agent': 'rom-blog-admin',
     },
-    redirect: 'error',
+    redirect: 'manual',
     cache: 'no-store',
     signal: AbortSignal.timeout(10000),
   });
@@ -109,7 +109,7 @@ async function callback(request, url, headers, key, env) {
       client_id: env.GITHUB_CLIENT_ID, client_secret: env.GITHUB_CLIENT_SECRET,
       redirect_uri: CALLBACK, code, code_verifier: flow.verifier,
     }),
-    redirect: 'error',
+    redirect: 'manual',
     signal: AbortSignal.timeout(10000),
   });
   if (!exchange.ok) throw new Error('Token exchange failed');

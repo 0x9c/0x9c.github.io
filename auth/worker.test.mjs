@@ -40,7 +40,9 @@ async function startLogin() {
 }
 
 function mockGithub(t, { id = 43869400, login = '0x9c', admin = true } = {}) {
-  return t.mock.method(globalThis, 'fetch', async (input) => {
+  return t.mock.method(globalThis, 'fetch', async (input, init) => {
+    // Workers supports manual redirects. Never forward OAuth credentials to a redirect target.
+    assert.equal(init.redirect, 'manual');
     const url = new URL(typeof input === 'string' || input instanceof URL ? input : input.url);
     if (url.href === 'https://github.com/login/oauth/access_token') {
       return Response.json({ access_token: 'github-test-token', token_type: 'bearer' });

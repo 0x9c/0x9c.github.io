@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HomeContent from '../../components/HomeContent.astro';
 import { themes } from '../../utils/themes';
+import site from '../../data/site.json';
 
 export function getStaticPaths() {
   return themes.map((theme) => ({ params: { theme: theme.id }, props: { theme } }));
@@ -11,11 +12,12 @@ const { theme } = Astro.props;
 ---
 
 <BaseLayout title={`${theme.name} 미리보기`} theme={theme.id} noindex>
+  {theme.id === 'andromeda' && <HomeContent theme={theme.id} />}
   <div class="preview-bar">
     <div class="shell preview-bar-inner">
-      <p><strong>{theme.name}</strong> 미리보기 <span>· 실제 블로그에는 아직 적용되지 않았습니다.</span></p>
+      <p><strong>{theme.name}</strong> 미리보기 <span>{theme.id === site.theme ? '· 현재 블로그 테마입니다.' : '· 실제 블로그에는 아직 적용되지 않았습니다.'}</span></p>
       <div><a href="/themes/">다른 테마 보기</a><a href="https://app.pagescms.org/0x9c/0x9c.github.io/main/file/site">관리 화면에서 적용</a></div>
     </div>
   </div>
-  <HomeContent theme={theme.id} />
+  {theme.id !== 'andromeda' && <HomeContent theme={theme.id} />}
 </BaseLayout>

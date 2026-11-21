@@ -1,27 +1,30 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { formatDate } from '../utils/posts';
+import { formatDate, getPostCover } from '../utils/posts';
+import site from '../data/site.json';
 
 interface Props {
   posts: CollectionEntry<'blog'>[];
+  theme?: string;
 }
 
-const { posts } = Astro.props;
+const { posts, theme = site.theme } = Astro.props;
+const entries = posts.map((post) => ({ post, cover: getPostCover(post, theme) }));
 ---
 
 {posts.length ? (
   <div class="post-list">
-    {posts.map((post) => (
-      <article class:list={['post-row', { 'has-cover': post.data.cover }]}>
+    {entries.map(({ post, cover }) => (
+      <article class:list={['post-row', { 'has-cover': cover }]}>
         <div class="post-copy">
           <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
           <h3><a href={`/blog/${post.id}/`}>{post.data.title}</a></h3>
           {post.data.description && <p>{post.data.description}</p>}
           <a class="text-link" href={`/blog/${post.id}/`} aria-label={`${post.data.title} 읽기`}>글 읽기</a>
         </div>
-        {post.data.cover && (
+        {cover && (
           <a class="post-cover" href={`/blog/${post.id}/`} tabindex="-1" aria-hidden="true">
-            <img src={post.data.cover} alt="" loading="lazy" />
+            <img src={cover} alt="" loading="lazy" />
           </a>
         )}
       </article>

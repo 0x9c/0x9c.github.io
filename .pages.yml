@@ -35,6 +35,10 @@ content:
       - name: cover
         label: 대표 사진
         type: image
+      - name: andromedaCover
+        label: 안드로메다 전용 표지
+        description: 대표 사진을 비워 둔 글에 안드로메다에서만 표시할 표지를 선택하세요.
+        type: image
       - name: coverAlt
         label: 대표 사진 설명
         description: 사진을 볼 수 없는 방문자를 위해 이미지의 내용을 설명해 주세요.
@@ -163,13 +167,13 @@ content:
       - name: andromedaPostWidth
         label: 안드로메다 글 너비
         type: select
-        default: '500'
+        default: '540'
         options:
           values: ['400', '450', '500', '540']
       - name: andromedaFontSize
         label: 안드로메다 글자 크기 (px)
         type: number
-        default: 15
+        default: 16
         options:
           min: 14
           max: 24

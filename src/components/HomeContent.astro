@@ -35,7 +35,7 @@ const posts = await getPublishedPosts();
       <div><p class="eyebrow">THE LATEST</p><h2 id="recent-title">최근 기록<span class="brand-dot">.</span></h2></div>
       <a class="section-link" href="/blog/">모든 글 보기</a>
     </div>
-    <PostList posts={posts.slice(0, 5)} />
+    <PostList posts={posts.slice(0, 5)} theme={activeTheme} />
   </section>
 </div>
 )}

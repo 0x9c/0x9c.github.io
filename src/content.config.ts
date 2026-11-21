@@ -9,6 +9,7 @@ const blog = defineCollection({
     description: z.string().nullish().transform((value) => value ?? ''),
     pubDate: z.coerce.date(),
     cover: z.string().optional().nullable(),
+    andromedaCover: z.string().nullish(),
     coverAlt: z.string().optional().nullable(),
     gallery: z.array(z.string()).nullish().transform((value) => value ?? []),
     audioUrl: z.string().nullish().transform((value) => value ?? ''),

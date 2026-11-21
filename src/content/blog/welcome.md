@@ -2,6 +2,8 @@
 title: 시작하며
 description: 이 공간의 첫 번째 기록입니다.
 pubDate: '2026-11-21'
+andromedaCover: /uploads/andromeda-radio.webp
+coverAlt: 헤드폰을 쓴 단발머리 DJ와 카세트를 그린 파란색과 분홍색의 AFTER SCHOOL FM 포스터
 draft: false
 ---
 

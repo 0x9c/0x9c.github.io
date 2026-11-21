@@ -8,19 +8,48 @@
   "andromedaAvatar": "/uploads/profile-avatar.png",
   "andromedaBanner": "/uploads/profile-banner.png",
   "andromedaSidebarLinks": [
-    { "label": "Telegram", "href": "" },
-    { "label": "E-mail", "href": "" }
+    {
+      "label": "Telegram"
+    },
+    {
+      "label": "E-mail",
+      "href": "https://rom.kr"
+    }
   ],
   "andromedaSidebarSide": "left",
   "andromedaPostWidth": "540",
   "andromedaFontSize": 16,
   "andromedaFontFamily": "sans",
   "andromedaDetails": [
-    { "label": "이름", "icon": "user", "value": "James Oh" },
-    { "label": "생일", "icon": "balloon", "value": "04/29" },
-    { "label": "별자리", "icon": "planet", "value": "Taurus" },
-    { "label": "지역", "icon": "pin", "value": "Seoul, Republic of Korea" },
-    { "label": "대명사", "icon": "heart", "value": "he/him/his" },
-    { "label": "관심사", "icon": "music", "value": "Synthesizer" }
+    {
+      "label": "이름",
+      "value": "James Oh",
+      "icon": "user"
+    },
+    {
+      "label": "생일",
+      "value": "04/29",
+      "icon": "balloon"
+    },
+    {
+      "label": "별자리",
+      "value": "Taurus",
+      "icon": "planet"
+    },
+    {
+      "label": "지역",
+      "value": "Seoul, Republic of Korea",
+      "icon": "pin"
+    },
+    {
+      "label": "대명사",
+      "value": "he/him/his",
+      "icon": "heart"
+    },
+    {
+      "label": "관심사",
+      "value": "Synthesizer",
+      "icon": "music"
+    }
   ]
 }

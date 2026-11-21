@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import site from '../data/site.json';
 import { formatDate, getPostCover } from '../utils/posts';
 import { themeHref, type ThemeId } from '../utils/themes';
 
@@ -20,9 +19,6 @@ const date = pubDate.toISOString();
 ---
 
 <article class="andromeda-post" data-andromeda-post={detail ? undefined : ''} data-entry-path={path}>
-  <header class="andromeda-post-top">
-    <a class="andromeda-post-author" href={themeHref('/', previewTheme)}>{site.title}</a>
-  </header>
   {cover && (detail || !gallery.length) && (
     detail
       ? <div class="andromeda-cover"><img src={cover} alt={coverAlt || ''} /></div>

@@ -94,11 +94,8 @@ html[data-theme='andromeda']::-webkit-scrollbar-thumb,
   line-height: 1.6;
 }
 .andromeda-feed { display:grid; grid-template-columns:minmax(0,1fr); gap:50px; }
-.andromeda-post-top, .andromeda-post-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:68px; padding:15px; }
-.andromeda-post-top { border-bottom:1px solid var(--a-border); }
-.andromeda-post-footer { flex-wrap:wrap; border-top:1px solid var(--a-border); }
-.andromeda-post-author, .andromeda-post-date { display:inline-block; padding:6px 10px; border:1px solid var(--a-border); border-radius:4px; background:var(--a-bg); }
-.andromeda-post-author { color:#e3e3e5 !important; font-weight:700; }
+.andromeda-post-footer { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; min-height:68px; padding:15px; border-top:1px solid var(--a-border); }
+.andromeda-post-date { display:inline-block; padding:6px 10px; border:1px solid var(--a-border); border-radius:4px; background:var(--a-bg); }
 .andromeda-post-date, .andromeda-read-link { font-size:.86em; }
 .andromeda-post-date { color:var(--a-muted) !important; }
 .andromeda-cover, .andromeda-gallery a { display:block; overflow:hidden; }

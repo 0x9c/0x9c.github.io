@@ -94,6 +94,27 @@ html[data-theme='astro-blog'] .astro-starter-grid a:hover .astro-starter-title,
 html[data-theme='astro-blog'] .astro-starter-grid a:hover .astro-starter-date { color: #2337ff; }
 html[data-theme='astro-blog'] .astro-starter-grid a:hover img { box-shadow: 0 2px 6px rgba(96, 115, 159, .25), 0 8px 24px rgba(96, 115, 159, .33); }
 
+html[data-theme='astro-blog'] .blog-index,
+html[data-theme='astro-blog'] .article-shell {
+  width: min(960px, calc(100% - 2rem));
+  min-height: 0;
+  padding-block: clamp(2rem, 5vw, 3rem) 4rem;
+}
+html[data-theme='astro-blog'] .article-shell { max-width: 720px; }
+html[data-theme='astro-blog'] .blog-index .page-heading,
+html[data-theme='astro-blog'] .article-heading { margin: 0 0 2rem; }
+html[data-theme='astro-blog'] .back-link + .article-heading { margin-top: 1.5rem; }
+html[data-theme='astro-blog'] .blog-index h1,
+html[data-theme='astro-blog'] .article-heading h1 {
+  margin: 0 0 .5rem;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  letter-spacing: -.045em;
+  line-height: 1.2;
+}
+html[data-theme='astro-blog'] .blog-index .post-row { min-height: 0; padding-block: 1.5rem; }
+html[data-theme='astro-blog'] .article-cover { margin-bottom: 2rem; border-radius: 12px; }
+html[data-theme='astro-blog'] .article-end { justify-content: flex-start; margin-top: 2rem; padding-top: 1rem; }
+
 @media (max-width: 720px) {
   html[data-theme='astro-blog'] .astro-starter-home { padding: 2em .5em 4em; }
   html[data-theme='astro-blog'] .astro-starter-intro { font-size: 1rem; }

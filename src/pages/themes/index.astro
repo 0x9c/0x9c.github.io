@@ -3,19 +3,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AndromedaIcon from '../../components/AndromedaIcon.astro';
 import site from '../../data/site.json';
 import { andromeda } from '../../data/andromedaSettings';
-import { getPostCover, getPublishedPosts } from '../../utils/posts';
+import { formatDate, getPostCover, getPublishedPosts } from '../../utils/posts';
 import { themes } from '../../utils/themes';
 
 const [latest] = await getPublishedPosts();
 const cover = latest && (latest.data.gallery[0] || getPostCover(latest, 'andromeda'));
+const journalHeading = ['garden', 'paper', 'night'].includes(site.theme);
 ---
 
 <BaseLayout title="테마 미리보기" description="블로그에 적용할 수 있는 테마를 미리 확인하세요." noindex>
   <div class="shell page-shell theme-gallery-page">
     <header class="page-heading">
-      <p class="eyebrow">FIND YOUR STYLE</p>
-      <h1>테마 미리보기<span class="brand-dot">.</span></h1>
-      <p>테마를 눌러 블로그 첫 화면을 미리 보세요. 적용은 관리 화면에서 할 수 있습니다.</p>
+      {journalHeading && <p class="eyebrow">FIND YOUR STYLE</p>}
+      <h1>테마 미리보기{journalHeading && <span class="brand-dot">.</span>}</h1>
+      <p>테마를 선택하면 홈과 글 상세 화면을 미리 볼 수 있습니다.</p>
     </header>
     <div class="theme-gallery">
       {themes.map((theme) => (
@@ -43,11 +44,25 @@ const cover = latest && (latest.data.gallery[0] || getPostCover(latest, 'androme
                 </div>}
               </div>
             </div>
+          ) : theme.id === 'astro-blog' || theme.id === 'astro-paper' ? (
+            <div class="theme-sample astro-sample" data-theme={theme.id} aria-hidden="true">
+              <div class="sample-nav"><strong>{site.title}<span>.</span></strong></div>
+              <div class="astro-sample-intro">
+                <strong>{site.headline}</strong>
+                <p>{site.introduction}</p>
+              </div>
+              <b>최근 글</b>
+              {latest && <div class="astro-sample-post">
+                {theme.id === 'astro-blog' && latest.data.cover && <img src={latest.data.cover} alt="" loading="lazy" />}
+                <strong>{latest.data.title}</strong>
+                <small>{formatDate(latest.data.pubDate)}</small>
+              </div>}
+            </div>
           ) : <div class="theme-sample" data-theme={theme.id} aria-hidden="true">
-            <div class="sample-nav"><strong>0x9c<span>.</span></strong><span>글 &nbsp; 소개</span></div>
+            <div class="sample-nav"><strong>{site.title}<span>.</span></strong><span>글 &nbsp; 소개</span></div>
             <div class="sample-hero">
               <span>A PERSONAL JOURNAL</span>
-              <strong>생각을 모아,<br />기록으로.</strong>
+              <strong>{site.headline}</strong>
               <i></i>
             </div>
             <div class="sample-lines"><span></span><span></span><span></span></div>
@@ -56,11 +71,32 @@ const cover = latest && (latest.data.gallery[0] || getPostCover(latest, 'androme
         </a>
       ))}
     </div>
-    <p class="theme-gallery-help">적용하려면 <a href="https://app.pagescms.org/0x9c/0x9c.github.io/main/file/site">관리 화면의 블로그 기본 설정</a>에서 테마를 선택하고 저장하세요.</p>
   </div>
 </BaseLayout>
 
 <style>
+  :global(.andromeda-main) .theme-gallery-page > .page-heading { margin: 0 0 24px; }
+  :global(.andromeda-main) .theme-gallery {
+    grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+    gap: 16px;
+    max-width: none;
+  }
+  :global(.andromeda-main) .theme-option { border-radius: 5px; }
+  :global(.andromeda-main) .theme-option-copy { padding: 15px; }
+  :global(.andromeda-main) .theme-option-copy p { min-height: 0; }
+  .astro-sample { height: 210px; overflow: hidden; font-family: Arial, 'Noto Sans KR', sans-serif; }
+  .astro-sample .sample-nav { padding-bottom: 8px; }
+  .astro-sample-intro { margin-block: 12px; }
+  .astro-sample-intro > strong { font-size: .95rem; line-height: 1.2; }
+  .astro-sample-intro p, .astro-sample-post small { margin: 4px 0 0; font-size: .53rem; }
+  .astro-sample > b, .astro-sample-post strong { display: block; font-size: .66rem; }
+  .astro-sample-post { margin-top: 5px; }
+  .astro-sample-post small { display: block; color: var(--muted); }
+  .astro-sample-post img { width: 100%; max-height: 30px; margin-bottom: 4px; object-fit: cover; }
+  .astro-sample[data-theme='astro-blog'] .astro-sample-post { text-align: center; }
+  .astro-sample[data-theme='astro-paper'] { font-family: 'Google Sans Code', 'Noto Sans KR', monospace; }
+  .astro-sample[data-theme='astro-paper'] .astro-sample-intro { border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .astro-sample[data-theme='astro-paper'] .astro-sample-post strong { color: var(--accent); }
   .andromeda-sample {
     height: 210px;
     overflow: hidden;

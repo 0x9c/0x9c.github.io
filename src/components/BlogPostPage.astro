@@ -15,6 +15,7 @@ interface Props {
 
 const { post, previewTheme } = Astro.props;
 const theme = previewTheme ?? site.theme;
+const isAstroTheme = theme === 'astro-blog' || theme === 'astro-paper';
 const cover = getPostCover(post, theme);
 const blogUrl = themeHref('/blog/', previewTheme);
 const { Content } = await render(post);
@@ -27,7 +28,7 @@ const { Content } = await render(post);
     <article class="article-shell">
       <a class="back-link" href={blogUrl}>모든 글</a>
       <header class="article-heading">
-        <p class="eyebrow">JOURNAL ENTRY</p>
+        {!isAstroTheme && <p class="eyebrow">JOURNAL ENTRY</p>}
         <h1>{post.data.title}</h1>
         {post.data.description && <p class="article-description">{post.data.description}</p>}
         <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
@@ -35,7 +36,10 @@ const { Content } = await render(post);
       {cover && <img class="article-cover" src={cover} alt={post.data.coverAlt || ''} />}
       <PostMedia title={post.data.title} gallery={post.data.gallery} audioUrl={post.data.audioUrl} />
       <div class="prose"><Content /></div>
-      <div class="article-end"><span>✳</span><a href={blogUrl}>다른 기록 보기</a></div>
+      <div class="article-end">
+        {!isAstroTheme && <span aria-hidden="true">✳</span>}
+        <a href={blogUrl}>{isAstroTheme ? '글 목록으로' : '다른 기록 보기'}</a>
+      </div>
     </article>
   )}
   <CodeBlocks />

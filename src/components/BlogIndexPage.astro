@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostList from './PostList.astro';
-import { getPublishedPosts } from '../utils/posts';
-import type { ThemeId } from '../utils/themes';
+import site from '../data/site.json';
+import { formatDate, getPostCover, getPublishedPosts } from '../utils/posts';
+import { themeHref, type ThemeId } from '../utils/themes';
 
 interface Props {
   previewTheme?: ThemeId;
@@ -10,16 +11,76 @@ interface Props {
 
 const { previewTheme } = Astro.props;
 const posts = await getPublishedPosts();
+const theme = previewTheme ?? site.theme;
+const journalHeading = theme !== 'astro-blog' && theme !== 'astro-paper';
 ---
 
 <BaseLayout title="글" description="차곡차곡 모아둔 기록들입니다." theme={previewTheme} noindex={!!previewTheme}>
-  <div class="shell page-shell">
-    <header class="page-heading">
-      <p class="eyebrow">THE JOURNAL</p>
-      <h1>모든 기록<span class="brand-dot">.</span></h1>
-      <p>생각하고, 배우고, 발견한 것들을 모았습니다.</p>
-    </header>
-    <div class="list-heading"><span>전체 글</span><span>{posts.length}개의 기록</span></div>
-    <PostList posts={posts} previewTheme={previewTheme} />
-  </div>
+  {theme === 'andromeda' ? (
+    <section class="andromeda-post" aria-labelledby="index-title">
+      <header class="andromeda-post-body index-heading">
+        <h1 id="index-title">모든 기록</h1>
+        <span>{posts.length}개의 기록</span>
+        <p>생각하고, 배우고, 발견한 것들을 모았습니다.</p>
+      </header>
+      {posts.length > 0 ? (
+        <ul class="index-list">
+          {posts.map((post, index) => {
+            const cover = getPostCover(post, 'andromeda');
+            return (
+              <li>
+                <a href={themeHref(`/blog/${post.id}/`, previewTheme)} aria-labelledby={`index-post-${index}`}>
+                  <div class="index-copy">
+                    <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                    <h2 id={`index-post-${index}`}>{post.data.title}</h2>
+                    {post.data.description && <p>{post.data.description}</p>}
+                  </div>
+                  {cover && <img src={cover} alt="" loading="lazy" />}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      ) : <p class="index-empty">아직 공개된 글이 없습니다.</p>}
+    </section>
+  ) : (
+    <div class="shell page-shell blog-index">
+      <header class="page-heading">
+        {journalHeading && <p class="eyebrow">THE JOURNAL</p>}
+        <h1>모든 기록{journalHeading && <span class="brand-dot">.</span>}</h1>
+        <p>생각하고, 배우고, 발견한 것들을 모았습니다.</p>
+      </header>
+      <div class="list-heading"><span>전체 글</span><span>{posts.length}개의 기록</span></div>
+      <PostList posts={posts} previewTheme={previewTheme} />
+    </div>
+  )}
 </BaseLayout>
+
+<style>
+  .index-heading {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: .5em 1em;
+  }
+  .index-heading h1 { margin: 0; }
+  .index-heading span { margin-inline-start: auto; font-size: .86em; color: var(--a-muted); }
+  .index-heading p { width: 100%; margin: 0; color: var(--a-muted); }
+  .index-list { margin: 0; padding: 0; list-style: none; }
+  .index-list li, .index-empty { border-top: 1px solid var(--a-border); }
+  .index-list a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 25px;
+  }
+  .index-copy { min-width: 0; overflow-wrap: anywhere; }
+  .index-copy time { color: var(--a-muted); font-size: .86em; }
+  .index-copy h2 { margin: 4px 0; color: #fff; font-size: 1.15em; line-height: 1.6; }
+  .index-copy p { margin: 0; }
+  .index-list img { width: min(28%, 100px); aspect-ratio: 1; object-fit: cover; border-radius: 4px; }
+  .index-list a:focus-visible { outline-offset: -3px; }
+  .index-list a:is(:hover, :focus-visible) h2 { color: var(--a-accent); text-decoration: underline; }
+  .index-empty { margin: 0; padding: 20px 25px; color: var(--a-muted); }
+</style>

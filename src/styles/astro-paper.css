@@ -64,6 +64,32 @@ html[data-theme='astro-paper'] .astro-paper-date { color: var(--muted); font-siz
 html[data-theme='astro-paper'] .astro-paper-all { margin-top: 2.5rem; text-align: center; }
 html[data-theme='astro-paper'] .astro-paper-all a { color: var(--accent); text-decoration: underline dashed; text-underline-offset: .25rem; }
 
+html[data-theme='astro-paper'] .blog-index,
+html[data-theme='astro-paper'] .article-shell {
+  width: min(768px, calc(100% - 2rem));
+  min-height: 0;
+  padding-block: clamp(1.5rem, 4vw, 2.5rem) 4rem;
+}
+html[data-theme='astro-paper'] .blog-index .page-heading,
+html[data-theme='astro-paper'] .article-heading { margin: 0 0 1.5rem; }
+html[data-theme='astro-paper'] .back-link + .article-heading { margin-top: 1.5rem; }
+html[data-theme='astro-paper'] .blog-index h1,
+html[data-theme='astro-paper'] .article-heading h1 {
+  margin: 0 0 .75rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: -.05em;
+  line-height: 1.25;
+}
+html[data-theme='astro-paper'] .blog-index .post-row { min-height: 0; padding-block: 1.5rem; }
+html[data-theme='astro-paper'] .blog-index .post-copy h3 { font-size: 1.125rem; letter-spacing: normal; }
+html[data-theme='astro-paper'] .blog-index .post-copy h3 a { color: var(--accent); }
+html[data-theme='astro-paper'] .blog-index time,
+html[data-theme='astro-paper'] .article-heading time { font-weight: 400; font-style: italic; }
+html[data-theme='astro-paper'] .article-cover { margin-bottom: 1.5rem; }
+html[data-theme='astro-paper'] .article-end { justify-content: flex-start; margin-top: 1.5rem; padding-top: 1rem; }
+html[data-theme='astro-paper'] .back-link,
+html[data-theme='astro-paper'] .article-end a { text-decoration: underline dashed; text-underline-offset: .25rem; }
+
 @media (max-width: 720px) {
   html[data-theme='astro-paper'] .astro-paper-home { padding-top: 1rem; }
   html[data-theme='astro-paper'] .astro-paper-hero { padding-top: 1.5rem; }

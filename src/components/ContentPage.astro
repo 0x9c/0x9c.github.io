@@ -2,6 +2,7 @@
 import { render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CodeBlocks from './CodeBlocks.astro';
+import site from '../data/site.json';
 import type { ThemeId } from '../utils/themes';
 
 interface Props {
@@ -11,16 +12,26 @@ interface Props {
 
 const { page, previewTheme } = Astro.props;
 const { Content } = await render(page);
+const theme = previewTheme ?? site.theme;
+const isAndromeda = theme === 'andromeda';
+const journalHeading = theme !== 'astro-blog' && theme !== 'astro-paper';
 ---
 
 <BaseLayout title={page.data.title} description={page.data.description} theme={previewTheme} noindex={!!previewTheme}>
-  <article class="article-shell static-page">
-    <header class="article-heading">
-      <p class="eyebrow">A LITTLE MORE</p>
-      <h1>{page.data.title}<span class="brand-dot">.</span></h1>
-      {page.data.description && <p class="article-description">{page.data.description}</p>}
-    </header>
-    <div class="prose"><Content /></div>
+  <article class={isAndromeda ? 'andromeda-post andromeda-post-body' : 'article-shell static-page'}>
+    {isAndromeda ? (
+      <>
+        <h1>{page.data.title}</h1>
+        {page.data.description && <p class="andromeda-post-description">{page.data.description}</p>}
+      </>
+    ) : (
+      <header class="article-heading">
+        {journalHeading && <p class="eyebrow">A LITTLE MORE</p>}
+        <h1>{page.data.title}{journalHeading && <span class="brand-dot">.</span>}</h1>
+        {page.data.description && <p class="article-description">{page.data.description}</p>}
+      </header>
+    )}
+    <div class:list={['prose', { 'andromeda-prose': isAndromeda }]}><Content /></div>
     <CodeBlocks />
   </article>
 </BaseLayout>

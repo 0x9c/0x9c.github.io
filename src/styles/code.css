@@ -40,7 +40,7 @@
 }
 
 .code-block-copy:hover { background: #35404b; }
-.code-block-copy:focus-visible { outline: 2px solid #a6e3cf; outline-offset: 2px; }
+.code-block-copy:focus-visible { outline: 2px solid var(--code-focus, #a6e3cf); outline-offset: 2px; }
 .prose .code-block pre { margin: 0; padding: 1rem; border-radius: 0; font-size: .9rem; line-height: 1.65; }
-.prose .code-block pre:focus-visible { outline: 2px solid #a6e3cf; outline-offset: -2px; }
+.prose .code-block pre:focus-visible { outline: 2px solid var(--code-focus, #a6e3cf); outline-offset: -2px; }
 .code-block-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

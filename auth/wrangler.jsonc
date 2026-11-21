@@ -1,0 +1,13 @@
+{
+  "name": "zeti-blog-auth",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "blog-auth.rom.kr", "custom_domain": true }
+  ],
+  "vars": {
+    "GITHUB_CLIENT_ID": "Ov23liZO3Z7YU281KXCs"
+  }
+}

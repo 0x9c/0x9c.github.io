@@ -3,7 +3,9 @@ import { getEntry, render } from 'astro:content';
 import site from '../data/site.json';
 import { andromeda } from '../data/andromedaSettings';
 import navigation from '../data/navigation.json';
+import { blogAdminAuth, editorUrl } from '../utils/admin';
 import AndromedaIcon from './AndromedaIcon.astro';
+import NavigationLinks from './NavigationLinks.astro';
 import ProfileAvatar from './ProfileAvatar.astro';
 import ProfileIntro from './ProfileIntro.astro';
 import '../styles/andromeda.css';
@@ -31,6 +33,7 @@ const AboutBody = about && (await render(about)).Content;
         <a href={homeHref} aria-label="홈" title="홈"><AndromedaIcon name="home" /></a>
         <a href={feedHref} aria-label="글 피드" title="글 피드"><AndromedaIcon name="archive" /></a>
         <button type="button" data-andromeda-open aria-haspopup="dialog" aria-expanded="false" aria-controls="andromeda-drawer" aria-label="메뉴 열기" title="메뉴 열기"><AndromedaIcon name="menu" /></button>
+        {blogAdminAuth && <a href={editorUrl} data-admin-only hidden aria-label="관리자 페이지" title="관리자 페이지"><AndromedaIcon name="admin" /></a>}
       </nav>
     </header>
     <div class="andromeda-layout">
@@ -73,7 +76,7 @@ const AboutBody = about && (await render(about)).Content;
       )}
       <nav aria-label="전체 메뉴">
         {!navigation.items.some((item) => item.href === '/') && <a href={homeHref}>홈</a>}
-        {navigation.items.map((item) => <a href={themeHref(item.href, previewTheme)}>{item.label}</a>)}
+        <NavigationLinks previewTheme={previewTheme} />
       </nav>
     </div>
   </dialog>

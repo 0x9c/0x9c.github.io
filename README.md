@@ -2,7 +2,9 @@
 
 Astro로 만든 개인 블로그입니다. Pages CMS에서 GitHub로 로그인해 글, 사진, 상단 메뉴를 관리할 수 있습니다.
 
-[블로그 관리 로그인](https://blog.rom.kr/login/)을 열고 편집 권한이 있는 계정으로 로그인하면 이 블로그의 **블로그 글** 관리 목록이 열립니다. 이미 Pages CMS에 로그인한 상태라면 목록이 바로 열립니다.
+블로그 메뉴의 **로그인**에서 GitHub 계정으로 로그인하면 홈으로 돌아옵니다. 저장소 소유자와 관리자에게는 상단 방패 아이콘과 메뉴의 **관리자 페이지**가 표시됩니다. 이 버튼으로 Pages CMS의 **블로그 글** 목록을 엽니다. Pages CMS를 처음 열거나 해당 세션이 만료되면 CMS도 로그인을 요청합니다.
+
+블로그 로그인은 30분간 유지되며 메뉴의 **블로그 로그아웃**으로 종료할 수 있습니다. 인증 Worker는 `auth/worker.mjs`이며 `auth/wrangler.jsonc`에 설정된 `blog-auth.rom.kr`에서 동작합니다. GitHub OAuth 앱의 콜백 주소는 `https://blog-auth.rom.kr/auth/callback`입니다. 앱의 Client Secret은 Worker의 `GITHUB_CLIENT_SECRET` Secret에 저장합니다. Worker 수정 후에는 `node --test auth/worker.test.mjs`로 확인하고 `npx wrangler@4 deploy --config auth/wrangler.jsonc`로 배포합니다. 블로그 빌드에서 `PUBLIC_BLOG_ADMIN_AUTH=true`로 이 연동을 켭니다.
 
 ## 처음 설정하기
 

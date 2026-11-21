@@ -1,11 +1,11 @@
 ---
-import navigation from '../data/navigation.json';
 import site from '../data/site.json';
 import { findTheme, themeHref, type ThemeId } from '../utils/themes';
 import AndromedaChrome from '../components/AndromedaChrome.astro';
 import ThemePreviewNotice from '../components/ThemePreviewNotice.astro';
 import BackToTop from '../components/BackToTop.astro';
 import LiveTheme from '../components/LiveTheme.astro';
+import NavigationLinks from '../components/NavigationLinks.astro';
 import '../styles/global.css';
 import '../styles/astro-starter.css';
 import '../styles/astro-paper.css';
@@ -62,10 +62,7 @@ const socialImage = image && Astro.site ? new URL(image, Astro.site).href : unde
           <span>{site.title}<span class="brand-dot">.</span></span>
         </a>
         <nav class="main-nav" aria-label="주 메뉴">
-          {navigation.items.map((item) => {
-            const active = item.href === '/' ? path === '/' || path.startsWith('/blog/') : item.href.startsWith('/') && path.startsWith(item.href);
-            return <a href={themeHref(item.href, previewTheme)} aria-current={active ? 'page' : undefined}>{item.label}</a>;
-          })}
+          <NavigationLinks previewTheme={previewTheme} currentPath={path} />
         </nav>
       </div>
     </header>

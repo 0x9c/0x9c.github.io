@@ -1,5 +1,7 @@
 ---
-const editorUrl = 'https://app.pagescms.org/0x9c/0x9c.github.io/main/collection/posts';
+import { authOrigin, blogAdminAuth, editorUrl } from '../utils/admin';
+
+const destination = blogAdminAuth ? `${authOrigin}/auth/login` : editorUrl;
 ---
 
 <!doctype html>
@@ -9,10 +11,10 @@ const editorUrl = 'https://app.pagescms.org/0x9c/0x9c.github.io/main/collection/
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
     <meta name="referrer" content="no-referrer" />
-    <meta http-equiv="refresh" content={`0;url=${editorUrl}`} />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
     <title>블로그 관리 로그인</title>
   </head>
   <body>
-    <p><a href={editorUrl}>Pages CMS에서 블로그 관리 열기</a></p>
+    <p><a href={destination}>{blogAdminAuth ? 'GitHub로 로그인' : 'Pages CMS에서 블로그 관리 열기'}</a></p>
   </body>
 </html>

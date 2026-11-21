@@ -1,7 +1,7 @@
 ---
 interface Props {
   name: 'search' | 'home' | 'archive' | 'menu' | 'close' | 'at' | 'arrow-left' | 'arrow-right' | 'sparkle'
-    | 'user' | 'balloon' | 'planet' | 'pin' | 'heart' | 'music' | 'hash';
+    | 'user' | 'balloon' | 'planet' | 'pin' | 'heart' | 'music' | 'hash' | 'admin';
 }
 const { name } = Astro.props;
 ---
@@ -11,6 +11,7 @@ const { name } = Astro.props;
   {name === 'search' && <><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></>}
   {name === 'home' && <><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M10 12h4v4h-4l0 -4" /></>}
   {name === 'archive' && <><path d="M12 8l0 4l2 2" /><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" /></>}
+  {name === 'admin' && <><path d="M12 3l8 3v5c0 4.5-3 8-8 10-5-2-8-5.5-8-10V6z" /><path d="m8.5 12 2.5 2.5 4.5-5" /></>}
   {name === 'menu' && <><path d="M4 4h6v6h-6l0 -6" /><path d="M14 4h6v6h-6l0 -6" /><path d="M4 14h6v6h-6l0 -6" /><path d="M14 17a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /></>}
   {name === 'close' && <><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></>}
   {name === 'at' && <><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0v-1.5a9 9 0 1 0 -5.5 8.28" /></>}

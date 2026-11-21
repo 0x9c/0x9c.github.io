@@ -20,8 +20,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - name: Check admin login
+        run: node --test auth/worker.test.mjs
       - name: Build and upload
         uses: withastro/action@v6
+        env:
+          PUBLIC_BLOG_ADMIN_AUTH: 'true'
         with:
           node-version: 24
 

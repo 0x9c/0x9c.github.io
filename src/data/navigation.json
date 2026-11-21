@@ -15,6 +15,10 @@
     {
       "label": "Photo",
       "href": "/tagged/photo/"
+    },
+    {
+      "label": "로그인",
+      "href": "/login/"
     }
   ]
 }

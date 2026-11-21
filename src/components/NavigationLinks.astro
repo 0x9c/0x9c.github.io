@@ -1,0 +1,126 @@
+---
+import navigation from '../data/navigation.json';
+import { blogAdminAuth, editorUrl } from '../utils/admin';
+import { themeHref, type ThemeId } from '../utils/themes';
+
+interface Props {
+  previewTheme?: ThemeId;
+  currentPath?: string;
+}
+const { previewTheme, currentPath } = Astro.props;
+const loginPath = /^\/login\/?(?:[?#].*)?$/;
+const loginIndex = navigation.items.findIndex(({ href }) => loginPath.test(href));
+---
+
+{navigation.items.map((item, index) => {
+  const isLogin = loginPath.test(item.href);
+  if (isLogin && index !== loginIndex) return null;
+  const active = currentPath && (item.href === '/' ? currentPath === '/' || currentPath.startsWith('/blog/') : item.href.startsWith('/') && currentPath.startsWith(item.href));
+  return <a href={themeHref(item.href, previewTheme)} data-admin-login={blogAdminAuth && isLogin ? true : undefined} aria-current={active ? 'page' : undefined}>{item.label}</a>;
+})}
+{blogAdminAuth && <>
+  <a href={editorUrl} data-admin-only hidden>관리자 페이지</a>
+  <button type="button" data-admin-only data-admin-logout hidden>블로그 로그아웃</button>
+  <span data-admin-message role="status"></span>
+</>}
+
+<style>
+  [data-admin-logout] {
+    justify-self: start;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    cursor: pointer;
+  }
+  :global(.main-nav) [data-admin-logout] {
+    padding: .4rem 0;
+    color: var(--muted);
+    font-size: .95rem;
+    font-weight: 600;
+  }
+  :global(.andromeda-drawer) [data-admin-logout] { color: #fff; }
+  [data-admin-logout]:hover { text-decoration: underline; }
+  [data-admin-message] { grid-column: 1 / -1; font-size: .85em; }
+  [data-admin-message]:empty { display: none; }
+</style>
+
+<script>
+  import { authOrigin, blogAdminAuth } from '../utils/admin';
+
+  const logout = document.querySelector<HTMLButtonElement>('[data-admin-logout]');
+  if (blogAdminAuth && logout) {
+    const adminLinks = document.querySelectorAll<HTMLElement>('[data-admin-only]');
+    const loginLinks = document.querySelectorAll<HTMLElement>('[data-admin-login]');
+    const message = document.querySelector<HTMLElement>('[data-admin-message]')!;
+    const channel = typeof BroadcastChannel === 'function' ? new BroadcastChannel('blog-admin-session') : undefined;
+    let pending: AbortController | undefined;
+    let expiryTimer: number | undefined;
+    let signingOut = false;
+
+    function showSession(expiresAt = 0) {
+      window.clearTimeout(expiryTimer);
+      const lifetime = expiresAt - Date.now();
+      for (const link of adminLinks) link.hidden = lifetime <= 0;
+      for (const link of loginLinks) link.hidden = lifetime > 0;
+      if (lifetime > 0) expiryTimer = window.setTimeout(() => showSession(), lifetime);
+    }
+
+    function reset() {
+      pending?.abort();
+      pending = undefined;
+      showSession();
+    }
+
+    async function refresh() {
+      if (pending || signingOut || document.hidden) return;
+      showSession();
+      const request = new AbortController();
+      pending = request;
+      const timeout = window.setTimeout(() => request.abort(), 8000);
+      try {
+        const response = await fetch(`${authOrigin}/auth/session`, {
+          credentials: 'include', cache: 'no-store', redirect: 'error', signal: request.signal,
+        });
+        if (!response.ok) return;
+        const session = await response.json();
+        if (request === pending && session.admin === true && Number.isFinite(session.expiresAt)) {
+          showSession(session.expiresAt);
+        }
+      } catch { /* Leave the public menu visible when the session cannot be verified. */ }
+      finally {
+        window.clearTimeout(timeout);
+        if (pending === request) pending = undefined;
+      }
+    }
+
+    logout.addEventListener('click', async () => {
+      if (signingOut) return;
+      signingOut = true;
+      logout.disabled = true;
+      message.textContent = '';
+      try {
+        const result = await fetch(`${authOrigin}/auth/logout`, {
+          method: 'POST', credentials: 'include', cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(8000),
+        });
+        if (!result.ok) throw new Error('Logout failed');
+        reset();
+        channel?.postMessage('logout');
+        loginLinks[0]?.focus();
+      } catch {
+        message.textContent = '로그아웃하지 못했습니다. 다시 시도해 주세요.';
+      } finally {
+        signingOut = false;
+        logout.disabled = false;
+      }
+    });
+
+    channel?.addEventListener('message', ({ data }) => { if (data === 'logout') reset(); });
+    window.addEventListener('pagehide', reset);
+    window.addEventListener('pageshow', refresh);
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', () => document.hidden ? reset() : void refresh());
+    void refresh();
+  }
+</script>

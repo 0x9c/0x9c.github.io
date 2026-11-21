@@ -42,3 +42,11 @@ export type ThemeId = (typeof themes)[number]['id'];
 export function findTheme(id: unknown) {
   return themes.find((theme) => theme.id === id) ?? themes[0];
 }
+
+/** Scope site content links to the selected preview. Keep assets and the theme picker at their public URLs. */
+export function themeHref(href: string, previewTheme?: ThemeId): string {
+  if (!previewTheme || !href.startsWith('/') || href.startsWith('//')) return href;
+  const pathname = href.split(/[?#]/, 1)[0];
+  if (/^\/(?:themes|uploads|fonts|_astro)(?:\/|$)/.test(pathname) || /\.[^/]+$/.test(pathname)) return href;
+  return `/themes/${previewTheme}${href}`;
+}

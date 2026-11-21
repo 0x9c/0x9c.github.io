@@ -2,24 +2,29 @@
 import PostList from './PostList.astro';
 import site from '../data/site.json';
 import { getPublishedPosts } from '../utils/posts';
-import { findTheme, type ThemeId } from '../utils/themes';
+import { findTheme, themeHref, type ThemeId } from '../utils/themes';
 import AstroStarterHome from './AstroStarterHome.astro';
 import AstroPaperHome from './AstroPaperHome.astro';
 import AndromedaHome from './AndromedaHome.astro';
 
-interface Props { theme?: ThemeId }
-const activeTheme = findTheme(Astro.props.theme ?? site.theme).id;
+interface Props {
+  theme?: ThemeId;
+  previewTheme?: ThemeId;
+}
+const { theme, previewTheme } = Astro.props;
+const activeTheme = findTheme(previewTheme ?? theme ?? site.theme).id;
+const postsHref = themeHref('/blog/', previewTheme);
 const posts = await getPublishedPosts();
 ---
 
-{activeTheme === 'astro-blog' ? <AstroStarterHome /> : activeTheme === 'astro-paper' ? <AstroPaperHome /> : activeTheme === 'andromeda' ? <AndromedaHome /> : (
+{activeTheme === 'astro-blog' ? <AstroStarterHome previewTheme={previewTheme} /> : activeTheme === 'astro-paper' ? <AstroPaperHome previewTheme={previewTheme} /> : activeTheme === 'andromeda' ? <AndromedaHome previewTheme={previewTheme} /> : (
 <div class="shell">
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-copy">
       <p class="eyebrow"><span class="status-dot"></span> A PERSONAL JOURNAL</p>
       <h1 id="hero-title">{site.headline}</h1>
       <p class="hero-intro">{site.introduction}</p>
-      <a class="button" href="/blog/">기록 둘러보기</a>
+      <a class="button" href={postsHref}>기록 둘러보기</a>
     </div>
     <div class="hero-art" aria-hidden="true">
       <span class="art-orbit art-orbit-one"></span>
@@ -33,9 +38,9 @@ const posts = await getPublishedPosts();
   <section class="recent-section" aria-labelledby="recent-title">
     <div class="section-heading">
       <div><p class="eyebrow">THE LATEST</p><h2 id="recent-title">최근 기록<span class="brand-dot">.</span></h2></div>
-      <a class="section-link" href="/blog/">모든 글 보기</a>
+      <a class="section-link" href={postsHref}>모든 글 보기</a>
     </div>
-    <PostList posts={posts.slice(0, 5)} theme={activeTheme} />
+    <PostList posts={posts.slice(0, 5)} theme={activeTheme} previewTheme={previewTheme} />
   </section>
 </div>
 )}

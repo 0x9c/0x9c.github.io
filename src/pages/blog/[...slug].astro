@@ -1,34 +1,11 @@
 ---
-import { render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import CodeBlocks from '../../components/CodeBlocks.astro';
-import PostMedia from '../../components/PostMedia.astro';
-import site from '../../data/site.json';
-import { formatDate, getPostCover, getPublishedPosts } from '../../utils/posts';
+import BlogPostPage from '../../components/BlogPostPage.astro';
+import { getPublishedPosts } from '../../utils/posts';
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts();
   return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
-
-const { post } = Astro.props;
-const cover = getPostCover(post, site.theme);
-const { Content } = await render(post);
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} image={cover}>
-  <article class="article-shell">
-    <a class="back-link" href="/blog/">모든 글</a>
-    <header class="article-heading">
-      <p class="eyebrow">JOURNAL ENTRY</p>
-      <h1>{post.data.title}</h1>
-      {post.data.description && <p class="article-description">{post.data.description}</p>}
-      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-    </header>
-    {cover && <img class="article-cover" src={cover} alt={post.data.coverAlt || ''} />}
-    <PostMedia title={post.data.title} gallery={post.data.gallery} audioUrl={post.data.audioUrl} />
-    <div class="prose"><Content /></div>
-    <CodeBlocks />
-    <div class="article-end"><span>✳</span><a href="/blog/">다른 기록 보기</a></div>
-  </article>
-</BaseLayout>
+<BlogPostPage post={Astro.props.post} />

@@ -1,0 +1,26 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlocks from './CodeBlocks.astro';
+import type { ThemeId } from '../utils/themes';
+
+interface Props {
+  page: CollectionEntry<'pages'>;
+  previewTheme?: ThemeId;
+}
+
+const { page, previewTheme } = Astro.props;
+const { Content } = await render(page);
+---
+
+<BaseLayout title={page.data.title} description={page.data.description} theme={previewTheme} noindex={!!previewTheme}>
+  <article class="article-shell static-page">
+    <header class="article-heading">
+      <p class="eyebrow">A LITTLE MORE</p>
+      <h1>{page.data.title}<span class="brand-dot">.</span></h1>
+      {page.data.description && <p class="article-description">{page.data.description}</p>}
+    </header>
+    <div class="prose"><Content /></div>
+    <CodeBlocks />
+  </article>
+</BaseLayout>

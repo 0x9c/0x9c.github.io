@@ -3,6 +3,12 @@
 // Attribution and license: third-party-licenses/astro-paper.txt
 import site from '../data/site.json';
 import { formatDate, getPublishedPosts } from '../utils/posts';
+import { themeHref, type ThemeId } from '../utils/themes';
+
+interface Props {
+  previewTheme?: ThemeId;
+}
+const { previewTheme } = Astro.props;
 
 const posts = await getPublishedPosts();
 ---
@@ -24,13 +30,13 @@ const posts = await getPublishedPosts();
       <ul>
         {posts.slice(0, 5).map((post) => (
           <li>
-            <a href={`/blog/${post.id}/`}><h3>{post.data.title}</h3></a>
+            <a href={themeHref(`/blog/${post.id}/`, previewTheme)}><h3>{post.data.title}</h3></a>
             <p class="astro-paper-date"><time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time></p>
             {post.data.description && <p>{post.data.description}</p>}
           </li>
         ))}
       </ul>
     ) : <p>아직 공개된 글이 없습니다.</p>}
-    <div class="astro-paper-all"><a href="/blog/">모든 글 보기</a></div>
+    <div class="astro-paper-all"><a href={themeHref('/blog/', previewTheme)}>모든 글 보기</a></div>
   </section>
 </div>

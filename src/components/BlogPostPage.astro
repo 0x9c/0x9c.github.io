@@ -1,0 +1,36 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CodeBlocks from './CodeBlocks.astro';
+import PostMedia from './PostMedia.astro';
+import site from '../data/site.json';
+import { formatDate, getPostCover } from '../utils/posts';
+import { themeHref, type ThemeId } from '../utils/themes';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  previewTheme?: ThemeId;
+}
+
+const { post, previewTheme } = Astro.props;
+const cover = getPostCover(post, previewTheme ?? site.theme);
+const blogUrl = themeHref('/blog/', previewTheme);
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} image={cover} theme={previewTheme} noindex={!!previewTheme}>
+  <article class="article-shell">
+    <a class="back-link" href={blogUrl}>모든 글</a>
+    <header class="article-heading">
+      <p class="eyebrow">JOURNAL ENTRY</p>
+      <h1>{post.data.title}</h1>
+      {post.data.description && <p class="article-description">{post.data.description}</p>}
+      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+    </header>
+    {cover && <img class="article-cover" src={cover} alt={post.data.coverAlt || ''} />}
+    <PostMedia title={post.data.title} gallery={post.data.gallery} audioUrl={post.data.audioUrl} />
+    <div class="prose"><Content /></div>
+    <CodeBlocks />
+    <div class="article-end"><span>✳</span><a href={blogUrl}>다른 기록 보기</a></div>
+  </article>
+</BaseLayout>

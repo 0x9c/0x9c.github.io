@@ -1,0 +1,16 @@
+---
+import type { ThemeId } from '../utils/themes';
+
+interface Props { theme: { id: ThemeId; name: string } }
+const { theme } = Astro.props;
+---
+
+<aside class="preview-bar" data-preview-notice aria-label="테마 미리보기">
+  <div class="shell preview-bar-inner">
+    <p><strong>{theme.name}</strong> 미리보기</p>
+    <div>
+      <a href="/themes/">다른 테마 보기</a>
+      <a href="https://app.pagescms.org/0x9c/0x9c.github.io/main/file/site">관리 화면에서 테마 선택</a>
+    </div>
+  </div>
+</aside>

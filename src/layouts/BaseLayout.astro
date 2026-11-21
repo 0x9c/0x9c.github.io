@@ -1,8 +1,10 @@
 ---
 import navigation from '../data/navigation.json';
 import site from '../data/site.json';
-import { findTheme, type ThemeId } from '../utils/themes';
+import { findTheme, themeHref, type ThemeId } from '../utils/themes';
 import AndromedaChrome from '../components/AndromedaChrome.astro';
+import ThemePreviewNotice from '../components/ThemePreviewNotice.astro';
+import LiveTheme from '../components/LiveTheme.astro';
 import '../styles/global.css';
 import '../styles/astro-starter.css';
 import '../styles/astro-paper.css';
@@ -20,13 +22,13 @@ interface Props {
 const { title, description = site.description, image, theme: previewTheme, noindex = false } = Astro.props;
 const theme = findTheme(previewTheme ?? site.theme);
 const pageTitle = title ? `${title} | ${site.title}` : site.title;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const path = previewTheme ? Astro.url.pathname.slice(`/themes/${previewTheme}`.length) || '/' : Astro.url.pathname;
+const canonical = new URL(path, Astro.site);
 const socialImage = image && Astro.site ? new URL(image, Astro.site).href : undefined;
-const path = Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang="ko" data-theme={theme.id}>
+<html lang="ko" data-theme={theme.id} data-preview-theme={previewTheme} data-public-title={path === '/' ? site.title : pageTitle}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,29 +45,36 @@ const path = Astro.url.pathname;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title={`${site.title} RSS`} href="/rss.xml" />
     <title>{pageTitle}</title>
+    <LiveTheme />
   </head>
   <body>
     <a class="skip-link" href="#content">본문으로 건너뛰기</a>
-    {theme.id === 'andromeda' ? <AndromedaChrome><slot /></AndromedaChrome> : <>
+    {theme.id === 'andromeda' ? <AndromedaChrome previewTheme={previewTheme}>
+      <slot />
+      {previewTheme && <ThemePreviewNotice theme={theme} />}
+    </AndromedaChrome> : <>
     <header class="site-header">
       <div class="shell header-inner">
-        <a class="brand" href="/" aria-label={`${site.title} 홈`}>
+        <a class="brand" href={themeHref('/', previewTheme)} aria-label={`${site.title} 홈`}>
           <span class="brand-mark" aria-hidden="true">✳</span>
           <span>{site.title}<span class="brand-dot">.</span></span>
         </a>
         <nav class="main-nav" aria-label="주 메뉴">
           {navigation.items.map((item) => {
             const active = item.href.startsWith('/') && (path === item.href || (item.href !== '/' && path.startsWith(item.href)));
-            return <a href={item.href} aria-current={active ? 'page' : undefined}>{item.label}</a>;
+            return <a href={themeHref(item.href, previewTheme)} aria-current={active ? 'page' : undefined}>{item.label}</a>;
           })}
         </nav>
       </div>
     </header>
-    <main id="content"><slot /></main>
+    <main id="content">
+      {previewTheme && <ThemePreviewNotice theme={theme} />}
+      <slot />
+    </main>
     <footer class="site-footer">
       <div class="shell footer-inner">
         <div>
-          <a class="footer-brand" href="/">{site.title}<span class="brand-dot">.</span></a>
+          <a class="footer-brand" href={themeHref('/', previewTheme)}>{site.title}<span class="brand-dot">.</span></a>
           <p>{site.description}</p>
         </div>
         <div class="footer-links">
@@ -78,5 +87,25 @@ const path = Astro.url.pathname;
       <div class="shell footer-bottom">© {new Date().getFullYear()} {site.title}</div>
     </footer>
     </>}
+    <script>
+      import { themeHref, themes } from '../utils/themes';
+
+      // Markdown is shared by the public site and every preview. Resolve its links in the open view.
+      const selected = themes.find(({ id }) => id === document.documentElement.dataset.previewTheme);
+      if (selected && !document.documentElement.hasAttribute('data-live-theme')) {
+        const prefix = `/themes/${selected.id}`;
+        const publicPage = new URL(location.pathname.slice(prefix.length) || '/', location.origin);
+        for (const link of document.querySelectorAll<HTMLAnchorElement>('.prose a[href]')) {
+          const href = link.getAttribute('href');
+          if (!href || href.startsWith('#') || link.hasAttribute('download')) continue;
+          const base = new URL(link.closest<HTMLElement>('[data-entry-path]')?.dataset.entryPath || publicPage.href, publicPage);
+          const url = URL.parse(href, base);
+          if (url?.origin !== publicPage.origin) continue;
+          const path = url.pathname + url.search + url.hash;
+          const scoped = themeHref(path, selected.id);
+          if (scoped !== path) link.href = scoped;
+        }
+      }
+    </script>
   </body>
 </html>

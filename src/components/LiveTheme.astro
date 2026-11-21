@@ -1,0 +1,133 @@
+---
+import site from '../data/site.json';
+import { themes } from '../utils/themes';
+
+const themeIds = themes.map((entry) => entry.id);
+const build = process.env.GITHUB_SHA || site.theme;
+---
+
+<style is:global>
+  html[data-live-theme] [data-preview-notice] { display: none !important; }
+</style>
+
+<script define:vars={{ themeIds, build }}>
+  (() => {
+    const rendered = document.documentElement.dataset.theme;
+    const publicUrl = new URL(location.href);
+    const prefix = '/themes/' + rendered + '/';
+    const marker = '_liveTheme';
+    const isLiveVariant = publicUrl.pathname.startsWith(prefix) && publicUrl.searchParams.get(marker) === '1';
+
+    // A visitor comparing themes owns that choice for the entire preview.
+    if (publicUrl.pathname.startsWith('/themes/') && !isLiveVariant) return;
+    if (!themeIds.includes(rendered)) return;
+
+    if (isLiveVariant) {
+      publicUrl.pathname = '/' + publicUrl.pathname.slice(prefix.length);
+      publicUrl.searchParams.delete(marker);
+      document.documentElement.dataset.liveTheme = '';
+      history.replaceState(history.state, '', publicUrl);
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('[data-preview-notice]')?.remove();
+        document.querySelector('meta[name="robots"]')?.remove();
+        const title = document.documentElement.dataset.publicTitle;
+        if (title) {
+          document.title = title;
+          document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+        }
+        for (const element of document.querySelectorAll('a[href], form[action]')) {
+          const attr = element.tagName === 'FORM' ? 'action' : 'href';
+          const path = element.getAttribute(attr);
+          if (path?.startsWith(prefix)) element.setAttribute(attr, '/' + path.slice(prefix.length));
+        }
+      }, { once: true });
+    }
+
+    const storageKey = 'rom-blog.live-theme.v2';
+    const refreshAfter = 10_000;
+    const retryAfter = 30_000;
+    const fallbackLifetime = 120_000;
+    let inFlight = false;
+    let navigating = false;
+    let localState;
+
+    function readState() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(storageKey));
+        if (stored?.build === build) return stored;
+      } catch { /* Storage can be unavailable in private browsing. */ }
+      return localState;
+    }
+
+    function saveState(state) {
+      localState = { ...state, build };
+      try { localStorage.setItem(storageKey, JSON.stringify(localState)); } catch {}
+    }
+
+    function applyTheme(theme) {
+      if (navigating || theme === rendered || !themeIds.includes(theme)) return;
+      navigating = true;
+      const target = new URL(location.href);
+      target.pathname = '/themes/' + theme + publicUrl.pathname;
+      target.searchParams.set(marker, '1');
+      location.replace(target);
+    }
+
+    function useRecentState(state) {
+      if (state && Date.now() - state.verifiedAt < fallbackLifetime) applyTheme(state.theme);
+    }
+
+    async function syncTheme() {
+      if (inFlight || navigating || document.hidden) return;
+      const now = Date.now();
+      const state = readState();
+      if (state?.nextCheck > now) {
+        useRecentState(state);
+        return;
+      }
+
+      inFlight = true;
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 3500);
+      const bucket = Math.floor(now / refreshAfter);
+      // Share the URL (and its CDN response) across readers within the same ten seconds.
+      const config = 'https://raw.githubusercontent.com/0x9c/0x9c.github.io/refs/heads/main/src/data/site.json?t=' + bucket;
+      try {
+        const response = await fetch(config, {
+          credentials: 'omit',
+          referrerPolicy: 'no-referrer',
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error('Theme config unavailable');
+        const { theme } = await response.json();
+        if (!themeIds.includes(theme)) throw new Error('Invalid theme');
+        const latest = readState();
+        if (latest?.verifiedAt > now) {
+          useRecentState(latest);
+          return;
+        }
+        saveState({ theme, verifiedAt: now, nextCheck: (bucket + 1) * refreshAfter });
+        applyTheme(theme);
+      } catch {
+        // A brief network failure must not roll a freshly saved choice back to the old Pages build.
+        const latest = readState();
+        if ((latest?.verifiedAt ?? 0) <= now) {
+          saveState({ ...latest, nextCheck: now + retryAfter });
+        }
+        useRecentState(latest);
+      } finally {
+        clearTimeout(timer);
+        inFlight = false;
+      }
+    }
+
+    syncTheme();
+    window.addEventListener('pageshow', syncTheme);
+    window.addEventListener('focus', syncTheme);
+    window.addEventListener('storage', (event) => {
+      if (event.key === storageKey) syncTheme();
+    });
+    document.addEventListener('visibilitychange', syncTheme);
+    setInterval(syncTheme, refreshAfter);
+  })();
+</script>

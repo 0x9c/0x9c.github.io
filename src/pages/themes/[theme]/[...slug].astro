@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import ContentPage from '../../../components/ContentPage.astro';
+import { themes } from '../../../utils/themes';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return themes.flatMap(({ id }) => pages.map((page) => ({
+    params: { theme: id, slug: page.id },
+    props: { page, previewTheme: id },
+  })));
+}
+---
+
+<ContentPage {...Astro.props} />

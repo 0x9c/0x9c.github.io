@@ -1,0 +1,10 @@
+---
+import BlogIndexPage from '../../../../components/BlogIndexPage.astro';
+import { themes } from '../../../../utils/themes';
+
+export function getStaticPaths() {
+  return themes.map(({ id }) => ({ params: { theme: id }, props: { previewTheme: id } }));
+}
+---
+
+<BlogIndexPage previewTheme={Astro.props.previewTheme} />

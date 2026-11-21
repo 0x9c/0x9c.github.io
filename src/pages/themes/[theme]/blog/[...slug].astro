@@ -1,0 +1,15 @@
+---
+import BlogPostPage from '../../../../components/BlogPostPage.astro';
+import { getPublishedPosts } from '../../../../utils/posts';
+import { themes } from '../../../../utils/themes';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return themes.flatMap(({ id }) => posts.map((post) => ({
+    params: { theme: id, slug: post.id },
+    props: { post, previewTheme: id },
+  })));
+}
+---
+
+<BlogPostPage {...Astro.props} />

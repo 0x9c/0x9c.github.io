@@ -5,7 +5,12 @@
   "headline": "생각을 모아, 기록으로.",
   "introduction": "배우고 발견한 것들, 오래 기억하고 싶은 순간들을 이곳에 남깁니다.",
   "andromedaHandle": "ZeTi",
-  "andromedaAvatar": "/uploads/andromeda-avatar.webp",
+  "andromedaAvatar": "/uploads/profile-avatar.png",
+  "andromedaBanner": "/uploads/profile-banner.png",
+  "andromedaSidebarLinks": [
+    { "label": "Telegram", "href": "" },
+    { "label": "E-mail", "href": "" }
+  ],
   "andromedaSidebarSide": "left",
   "andromedaPostWidth": "540",
   "andromedaFontSize": 16,

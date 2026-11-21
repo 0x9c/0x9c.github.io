@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import AndromedaPost from './AndromedaPost.astro';
 import CodeBlocks from './CodeBlocks.astro';
 import PostMedia from './PostMedia.astro';
+import YouTubeVideo from './YouTubeVideo.astro';
 import site from '../data/site.json';
 import { formatDate, getPostCover } from '../utils/posts';
 import { themeHref, type ThemeId } from '../utils/themes';
@@ -34,6 +35,7 @@ const { Content } = await render(post);
         <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
       </header>
       {cover && <img class="article-cover" src={cover} alt={post.data.coverAlt || ''} />}
+      <YouTubeVideo url={post.data.youtubeUrl} title={post.data.title} />
       <PostMedia title={post.data.title} gallery={post.data.gallery} audioUrl={post.data.audioUrl} />
       <div class="prose"><Content /></div>
       <div class="article-end">

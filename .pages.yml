@@ -60,6 +60,10 @@ content:
         label: 오디오 주소
         description: 직접 재생 가능한 오디오 파일의 HTTPS 주소를 입력합니다.
         type: string
+      - name: youtubeUrl
+        label: YouTube 동영상 주소
+        description: 동영상의 YouTube 주소 또는 공유 링크를 입력하세요.
+        type: string
       - name: draft
         label: 임시 저장
         description: 켜두면 사이트에 표시되지 않습니다.
@@ -166,6 +170,27 @@ content:
       - name: andromedaBanner
         label: 안드로메다 배너 사진
         type: image
+      - name: andromedaSidebarLinks
+        label: 프로필 카드 연락처
+        description: 주소를 입력한 항목이 첫 화면의 프로필 카드에 표시됩니다.
+        type: object
+        list:
+          collapsible:
+            collapsed: false
+            summary: '{label}'
+        fields:
+          - name: label
+            label: 항목 이름
+            type: string
+            required: true
+          - name: href
+            label: 주소
+            description: https://로 시작하는 링크 또는 이메일 주소를 입력하세요.
+            type: string
+          - name: text
+            label: 표시 문구
+            description: 비워 두면 주소가 그대로 표시됩니다.
+            type: string
       - name: andromedaSidebarSide
         label: 안드로메다 사이드바 위치
         type: select

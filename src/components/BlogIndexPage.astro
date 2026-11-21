@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AndromedaHome from './AndromedaHome.astro';
 import PostList from './PostList.astro';
 import site from '../data/site.json';
-import { formatDate, getPostCover, getPublishedPosts, type PostTopic } from '../utils/posts';
-import { findTheme, themeHref, type ThemeId } from '../utils/themes';
+import { getPublishedPosts, type PostTopic } from '../utils/posts';
+import { findTheme, type ThemeId } from '../utils/themes';
 
 interface Props {
   previewTheme?: ThemeId;
@@ -14,77 +15,21 @@ const { previewTheme, topic } = Astro.props;
 const posts = await getPublishedPosts(topic);
 const theme = previewTheme ?? site.theme;
 const journalHeading = theme !== 'astro-blog' && theme !== 'astro-paper';
-const heading = topic ?? '모든 기록';
-const introduction = topic ? undefined : '생각하고, 배우고, 발견한 것들을 모았습니다.';
 const title = topic ?? (previewTheme && `${findTheme(previewTheme).name} 미리보기`);
 ---
 
 <BaseLayout title={title} description={topic && `${topic} 주제의 글 목록`} theme={previewTheme} noindex={!!previewTheme}>
   {theme === 'andromeda' ? (
-    <section class="andromeda-post" data-andromeda-index={topic ? undefined : ''} aria-labelledby="index-title">
-      <header class="andromeda-post-body index-heading">
-        <h1 id="index-title">{heading}</h1>
-        <span>{posts.length}개의 기록</span>
-        {introduction && <p>{introduction}</p>}
-      </header>
-      {posts.length > 0 ? (
-        <ul class="index-list">
-          {posts.map((post, index) => {
-            const cover = getPostCover(post, 'andromeda');
-            return (
-              <li>
-                <a href={themeHref(`/blog/${post.id}/`, previewTheme)} aria-labelledby={`index-post-${index}`}>
-                  <div class="index-copy">
-                    <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-                    <h2 id={`index-post-${index}`}>{post.data.title}</h2>
-                    {post.data.description && <p>{post.data.description}</p>}
-                  </div>
-                  {cover && <img src={cover} alt="" loading="lazy" />}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      ) : <p class="index-empty">아직 공개된 글이 없습니다.</p>}
-    </section>
+    <AndromedaHome posts={posts} topic={topic} previewTheme={previewTheme} />
   ) : (
     <div class="shell page-shell blog-index">
       <header class="page-heading">
         {journalHeading && <p class="eyebrow">THE JOURNAL</p>}
-        <h1>{heading}{journalHeading && <span class="brand-dot">.</span>}</h1>
-        {introduction && <p>{introduction}</p>}
+        <h1>{topic ?? '모든 기록'}{journalHeading && <span class="brand-dot">.</span>}</h1>
+        {!topic && <p>생각하고, 배우고, 발견한 것들을 모았습니다.</p>}
       </header>
       <div class="list-heading"><span>{topic ? '글 목록' : '전체 글'}</span><span>{posts.length}개의 기록</span></div>
       <PostList posts={posts} previewTheme={previewTheme} />
     </div>
   )}
 </BaseLayout>
-
-<style>
-  .index-heading {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: .5em 1em;
-  }
-  .index-heading h1 { margin: 0; }
-  .index-heading span { margin-inline-start: auto; font-size: .86em; color: var(--a-muted); }
-  .index-heading p { width: 100%; margin: 0; color: var(--a-muted); }
-  .index-list { margin: 0; padding: 0; list-style: none; }
-  .index-list li, .index-empty { border-top: 1px solid var(--a-border); }
-  .index-list a {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    padding: 20px 25px;
-  }
-  .index-copy { min-width: 0; overflow-wrap: anywhere; }
-  .index-copy time { color: var(--a-muted); font-size: .86em; }
-  .index-copy h2 { margin: 4px 0; color: #fff; font-size: 1.15em; line-height: 1.6; }
-  .index-copy p { margin: 0; }
-  .index-list img { width: min(28%, 100px); aspect-ratio: 1; object-fit: cover; border-radius: 4px; }
-  .index-list a:focus-visible { outline-offset: -3px; }
-  .index-list a:is(:hover, :focus-visible) h2 { color: var(--a-accent); text-decoration: underline; }
-  .index-empty { margin: 0; padding: 20px 25px; color: var(--a-muted); }
-</style>

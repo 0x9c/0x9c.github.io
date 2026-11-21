@@ -1,7 +1,10 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { formatDate, getPostCover } from '../utils/posts';
+import { formatDate, getPostCover, postTopics } from '../utils/posts';
 import { themeHref, type ThemeId } from '../utils/themes';
+import AndromedaIcon from './AndromedaIcon.astro';
+import YouTubeVideo from './YouTubeVideo.astro';
+import '../styles/andromeda-post-skin.css';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -16,39 +19,49 @@ const href = themeHref(path, previewTheme);
 const cover = getPostCover(post, 'andromeda');
 const gallery = post.data.gallery.filter((image) => image.trim());
 const date = pubDate.toISOString();
+const topics = postTopics.filter((topic) => post.data.tags.includes(topic.toLowerCase()));
 ---
 
-<article class="andromeda-post" data-andromeda-post={detail ? undefined : ''} data-entry-path={path}>
-  {cover && (detail || !gallery.length) && (
-    detail
-      ? <div class="andromeda-cover"><img src={cover} alt={coverAlt || ''} /></div>
-      : <a class="andromeda-cover" href={href}><img src={cover} alt={coverAlt || title} /></a>
-  )}
-  {gallery.length > 0 && (
-    <div class:list={['andromeda-gallery', { 'andromeda-gallery-single': gallery.length === 1 }]}>
-      {gallery.map((image, index) => (
-        <a href={image} target="_blank" rel="noopener noreferrer">
-          <img src={image} alt={`${title} 사진 ${index + 1}`} loading="lazy" />
-        </a>
-      ))}
-    </div>
-  )}
-  <div class="andromeda-post-body">
+<article class="andromeda-post andromeda-entry" data-andromeda-post={detail ? undefined : ''} data-entry-path={path} data-search-description={detail ? undefined : description}>
+  <header class="andromeda-entry-heading">
     {detail ? <h1>{title}</h1> : <h2><a href={href}>{title}</a></h2>}
-    {description && <p class="andromeda-post-description">{description}</p>}
+  </header>
+  <div class="andromeda-post-body">
+    {post.data.youtubeUrl && <YouTubeVideo url={post.data.youtubeUrl} title={title} />}
+    {cover && (detail || !gallery.length) && (
+      detail
+        ? <div class="andromeda-cover"><img src={cover} alt={coverAlt || ''} /></div>
+        : <a class="andromeda-cover" href={href}><img src={cover} alt={coverAlt || title} /></a>
+    )}
+    {gallery.length > 0 && (
+      <div class:list={['andromeda-gallery', { 'andromeda-gallery-single': gallery.length === 1 }]}>
+        {gallery.map((image, index) => (
+          <a href={image} target="_blank" rel="noopener noreferrer">
+            <img src={image} alt={`${title} 사진 ${index + 1}`} loading="lazy" />
+          </a>
+        ))}
+      </div>
+    )}
     {audioUrl && (
       <audio controls preload="none" src={audioUrl} aria-label={`${title} 오디오`}>
         <a href={audioUrl}>오디오 파일 열기</a>
       </audio>
     )}
-    <div class="prose andromeda-prose"><slot /></div>
+    {post.body?.trim()
+      ? <div class="prose andromeda-prose"><slot /></div>
+      : description && <p>{description}</p>}
+    {!detail && <a class="andromeda-more" href={href} aria-label={`${title} 더 보기`}>더 보기</a>}
   </div>
+  {topics.length > 0 && (
+    <nav class="andromeda-entry-topics" aria-label={`${title} 글 주제`}>
+      <AndromedaIcon name="hash" />
+      {topics.map((topic) => <a href={themeHref(`/tagged/${topic.toLowerCase()}/`, previewTheme)}>#{topic}</a>)}
+    </nav>
+  )}
   <footer class="andromeda-post-footer">
     {detail
       ? <time class="andromeda-post-date" datetime={date}>{formatDate(pubDate)}</time>
       : <a class="andromeda-post-date" href={href}><time datetime={date}>{formatDate(pubDate)}</time></a>}
-    {detail
-      ? <a class="andromeda-read-link" href={themeHref('/', previewTheme)}>글 목록으로</a>
-      : <a class="andromeda-read-link" href={href}>글 자세히 보기</a>}
+    {detail && <a class="andromeda-read-link" href={themeHref('/', previewTheme)}>글 목록으로</a>}
   </footer>
 </article>

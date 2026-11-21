@@ -1,7 +1,7 @@
 ---
 interface Props {
   name: 'search' | 'home' | 'archive' | 'menu' | 'close' | 'at' | 'arrow-left' | 'arrow-right' | 'sparkle'
-    | 'user' | 'balloon' | 'planet' | 'pin' | 'heart' | 'music';
+    | 'user' | 'balloon' | 'planet' | 'pin' | 'heart' | 'music' | 'hash';
 }
 const { name } = Astro.props;
 ---
@@ -14,6 +14,10 @@ const { name } = Astro.props;
   {name === 'menu' && <><path d="M4 4h6v6h-6l0 -6" /><path d="M14 4h6v6h-6l0 -6" /><path d="M4 14h6v6h-6l0 -6" /><path d="M14 17a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /></>}
   {name === 'close' && <><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></>}
   {name === 'at' && <><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0v-1.5a9 9 0 1 0 -5.5 8.28" /></>}
+  {name === 'hash' && <>
+    <path d="M5 9h14" /><path d="M5 15h14" />
+    <path d="M11 4l-4 16" /><path d="M17 4l-4 16" />
+  </>}
   {name === 'user' && <>
     <circle cx="12" cy="7" r="3.75" />
     <path d="M5.5 21v-1.5a5 5 0 0 1 5-5h3a5 5 0 0 1 5 5V21" />

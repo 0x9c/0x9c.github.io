@@ -13,6 +13,7 @@ const blog = defineCollection({
     andromedaCover: z.string().nullish(),
     coverAlt: z.string().optional().nullable(),
     gallery: z.array(z.string()).nullish().transform((value) => value ?? []),
+    youtubeUrl: z.string().nullish(),
     audioUrl: z.string().nullish().transform((value) => value ?? ''),
     draft: z.boolean().default(false),
   }),

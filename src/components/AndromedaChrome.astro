@@ -4,6 +4,7 @@ import { andromeda } from '../data/andromedaSettings';
 import navigation from '../data/navigation.json';
 import AndromedaIcon from './AndromedaIcon.astro';
 import '../styles/andromeda.css';
+import '../styles/andromeda-shell.css';
 import { themeHref, type ThemeId } from '../utils/themes';
 
 interface Props {
@@ -29,11 +30,22 @@ const feedHref = themeHref('/feed/', previewTheme);
     </header>
     <div class="andromeda-layout">
       <aside class="andromeda-profile">
-        <div class="andromeda-banner" style={andromeda.banner ? `background-image:url('${andromeda.banner.replace(/['()\\]/g, '')}')` : undefined}></div>
+        <div class="andromeda-banner">
+          {andromeda.banner && <img src={andromeda.banner} alt="" />}
+        </div>
+        <a class="andromeda-avatar" href={homeHref} aria-label={`${site.title} 홈`}>{andromeda.avatar ? <img src={andromeda.avatar} alt="" /> : site.title.slice(0, 1)}</a>
         <div class="andromeda-profile-content">
-          <a class="andromeda-avatar" href={homeHref} aria-label={`${site.title} 홈`}>{andromeda.avatar ? <img src={andromeda.avatar} alt="" /> : site.title.slice(0, 1)}</a>
-          <h1>{site.title}</h1><p class="andromeda-handle"><AndromedaIcon name="at" /> {andromeda.handle}</p>
-          <p class="andromeda-profile-description">{site.description}</p>
+          <a class="andromeda-profile-identity" href={homeHref}>
+            <h1>{site.title}</h1>
+            <span class="andromeda-handle"><AndromedaIcon name="at" /> {andromeda.handle}</span>
+          </a>
+          {andromeda.sidebarLinks.length ? (
+            <dl class="andromeda-profile-description andromeda-profile-links">
+              {andromeda.sidebarLinks.map(({ label, href, text }) => (
+                <><dt>{label}</dt><dd><a href={href}>{text}</a></dd></>
+              ))}
+            </dl>
+          ) : site.description && <p class="andromeda-profile-description">{site.description}</p>}
         </div>
       </aside>
       <main id="content" class="andromeda-main"><slot /></main>
@@ -83,15 +95,12 @@ const feedHref = themeHref('/feed/', previewTheme);
 
   const forms = Array.from(document.querySelectorAll<HTMLFormElement>('[data-andromeda-search]'));
   const inputs = forms.map((form) => form.querySelector<HTMLInputElement>('input')).filter((input): input is HTMLInputElement => input !== null);
-  let term = new URLSearchParams(window.location.search).get('q') || '';
-  // Searches bookmarked before the feed moved still open the full-text results.
-  if (term.trim() && document.querySelector('[data-andromeda-index]')) {
-    const target = new URL(window.location.href);
-    target.pathname = target.pathname.replace(/\/?$/, '/feed/');
-    window.location.replace(target.href);
-  }
+  const feed = document.querySelector<HTMLElement>('[data-andromeda-feed]');
+  const globalFeed = feed && !feed.dataset.andromedaTopic;
+  let term = globalFeed ? new URLSearchParams(window.location.search).get('q') || '' : '';
   const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-andromeda-post]'));
   const empty = document.querySelector<HTMLElement>('[data-andromeda-search-empty]');
+  const noPosts = document.querySelector<HTMLElement>('[data-andromeda-feed-empty]');
   const pagination = document.querySelector<HTMLElement>('[data-andromeda-pagination]');
   const prev = document.querySelector<HTMLButtonElement>('[data-andromeda-prev]');
   const next = document.querySelector<HTMLButtonElement>('[data-andromeda-next]');
@@ -99,20 +108,27 @@ const feedHref = themeHref('/feed/', previewTheme);
   let page = 1;
   function updateFeed() {
     const query = term.trim().toLocaleLowerCase();
-    const matching = cards.filter((card) => (card.textContent || '').toLocaleLowerCase().includes(query));
+    const matching = cards.filter((card) => `${card.dataset.searchDescription || ''} ${card.textContent || ''}`.toLocaleLowerCase().includes(query));
     const pages = Math.max(1, Math.ceil(matching.length / 6));
     page = Math.min(page, pages);
     cards.forEach((card) => { card.hidden = !matching.slice((page - 1) * 6, page * 6).includes(card); });
     if (empty) empty.hidden = matching.length > 0 || !query;
+    if (noPosts) noPosts.hidden = !!query;
     if (pagination) pagination.hidden = pages <= 1;
     if (pageLabel) pageLabel.textContent = `${page} / ${pages}`;
     if (prev) prev.disabled = page <= 1;
     if (next) next.disabled = page >= pages;
   }
   inputs.forEach((input) => { input.value = term; });
-  if (cards.length) {
-    forms.forEach((form) => form.addEventListener('submit', (event) => { event.preventDefault(); page = 1; updateFeed(); if (drawer?.open) drawer.close(); }));
-    inputs.forEach((input) => input.addEventListener('input', () => { term = input.value; inputs.forEach((other) => { if (other !== input) other.value = term; }); page = 1; updateFeed(); }));
+  if (globalFeed) {
+    inputs.forEach((input) => input.addEventListener('input', () => {
+      term = input.value;
+      inputs.forEach((other) => { if (other !== input) other.value = term; });
+      page = 1;
+      updateFeed();
+    }));
+  }
+  if (feed) {
     prev?.addEventListener('click', () => { page--; updateFeed(); });
     next?.addEventListener('click', () => { page++; updateFeed(); });
     updateFeed();

@@ -1,0 +1,87 @@
+.andromeda-shell .andromeda-header,
+.andromeda-shell .andromeda-profile {
+  box-shadow: 3px 3px 7px -3px #0f1012;
+}
+
+.andromeda-header > .andromeda-search {
+  flex-basis: 247px;
+  color: var(--a-text);
+}
+
+.andromeda-header .andromeda-search input::placeholder { color: inherit; }
+.andromeda-header .andromeda-search input:focus::placeholder { color: transparent; }
+.andromeda-header .andromeda-header-actions { gap: 15px; }
+.andromeda-header .andromeda-header-actions :is(a, button) {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  color: white;
+}
+.andromeda-header .andromeda-header-actions :is(a, button):hover { color: var(--a-accent); }
+.andromeda-header-actions .andromeda-icon { width: 20px; height: 20px; }
+.andromeda-header-actions :is(a, button)::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+}
+
+.andromeda-profile .andromeda-banner {
+  min-height: 170px;
+  aspect-ratio: auto;
+  overflow: hidden;
+  border-radius: 5px 5px 0 0;
+}
+
+.andromeda-profile .andromeda-banner img {
+  width: 100%;
+  height: auto;
+  min-height: 170px;
+  object-fit: cover;
+}
+
+.andromeda-profile > .andromeda-avatar {
+  margin-inline-start: 15px;
+  background: var(--a-card);
+}
+
+.andromeda-profile .andromeda-profile-content { padding: 15px; }
+.andromeda-profile .andromeda-profile-identity { display: block; }
+.andromeda-profile .andromeda-profile-identity h1 { margin: 0; }
+.andromeda-profile .andromeda-handle {
+  display: inline-flex;
+  gap: 5px;
+  margin: 0;
+  color: var(--a-text);
+}
+.andromeda-profile .andromeda-handle .andromeda-icon {
+  width: 1em;
+  height: 1em;
+  color: #ff99b8;
+}
+
+.andromeda-profile .andromeda-profile-links { overflow-wrap: anywhere; }
+.andromeda-profile-links dt { margin-bottom: 1em; font-weight: 700; }
+.andromeda-profile-links dt:not(:first-child) { margin-top: 1em; }
+.andromeda-profile-links dd { margin: 0; }
+.andromeda-profile-links a {
+  border-bottom: 1px solid;
+  border-image: linear-gradient(147deg, #ff99b8, #72b8e0) 1;
+  color: white;
+}
+.andromeda-profile-links a:hover { color: rgb(255 255 255 / 75%); }
+
+@media (max-width: 1020px) {
+  .andromeda-theme .andromeda-shell { width: 100%; }
+  .andromeda-shell .andromeda-header { border-radius: 0; }
+  .andromeda-shell .andromeda-layout {
+    display: block;
+    width: 90vw;
+    margin-inline: auto;
+  }
+  .andromeda-shell .andromeda-profile {
+    position: relative;
+    top: 0;
+    width: 100%;
+    margin-bottom: 50px;
+  }
+}

@@ -4,6 +4,7 @@ import site from '../data/site.json';
 import { findTheme, themeHref, type ThemeId } from '../utils/themes';
 import AndromedaChrome from '../components/AndromedaChrome.astro';
 import ThemePreviewNotice from '../components/ThemePreviewNotice.astro';
+import BackToTop from '../components/BackToTop.astro';
 import LiveTheme from '../components/LiveTheme.astro';
 import '../styles/global.css';
 import '../styles/astro-starter.css';
@@ -85,6 +86,7 @@ const socialImage = image && Astro.site ? new URL(image, Astro.site).href : unde
       <div class="shell footer-bottom">© {new Date().getFullYear()} {site.title}</div>
     </footer>
     </>}
+    <BackToTop />
     <script>
       import { themeHref, themes } from '../utils/themes';
 

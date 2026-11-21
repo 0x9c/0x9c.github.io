@@ -1,0 +1,46 @@
+<button type="button" class="back-to-top" aria-label="맨 위로" title="맨 위로" hidden>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5m-7 7 7-7 7 7" />
+  </svg>
+</button>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    right: calc(16px + env(safe-area-inset-right, 0px));
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    z-index: 9;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--hero-bg);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .back-to-top:is(:hover, :focus-visible) { color: var(--link); border-color: currentColor; }
+  .back-to-top[hidden], :global(html:has(dialog[open])) .back-to-top { display: none; }
+</style>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.back-to-top');
+  if (button) {
+    const updateVisibility = () => {
+      const atTop = window.scrollY <= 0;
+      if (button.hidden !== atTop) button.hidden = atTop;
+    };
+    updateVisibility();
+    window.addEventListener('scroll', updateVisibility, { passive: true });
+    window.addEventListener('pageshow', updateVisibility);
+    button.addEventListener('click', (event) => {
+      if (event.detail === 0) {
+        document.querySelector<HTMLAnchorElement>('.skip-link')?.focus({ preventScroll: true });
+      }
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reducedMotion ? 'instant' : 'smooth' });
+    });
+  }
+</script>

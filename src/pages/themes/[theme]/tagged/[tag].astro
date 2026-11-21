@@ -1,0 +1,14 @@
+---
+import BlogIndexPage from '../../../../components/BlogIndexPage.astro';
+import { postTopics } from '../../../../utils/posts';
+import { themes } from '../../../../utils/themes';
+
+export function getStaticPaths() {
+  return themes.flatMap(({ id }) => postTopics.map((topic) => ({
+    params: { theme: id, tag: topic.toLowerCase() },
+    props: { topic, previewTheme: id },
+  })));
+}
+---
+
+<BlogIndexPage {...Astro.props} />

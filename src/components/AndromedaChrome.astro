@@ -44,7 +44,7 @@ const feedHref = themeHref('/feed/', previewTheme);
     <button type="button" class="andromeda-close" data-andromeda-close aria-label="메뉴 닫기" autofocus><span><AndromedaIcon name="close" /></span><span>닫기</span></button>
     <div class="andromeda-drawer-content">
       <form class="andromeda-search andromeda-drawer-search" data-andromeda-search role="search" action={feedHref}>
-        <AndromedaIcon name="search" /><input type="search" name="q" placeholder="검색어를 입력하세요" aria-label="글 검색" />
+        <input type="search" name="q" placeholder="검색어를 입력하세요" aria-label="글 검색" />
       </form>
       <a class="andromeda-avatar" href={homeHref} aria-label={`${site.title} 홈`}>{andromeda.avatar ? <img src={andromeda.avatar} alt="" /> : site.title.slice(0, 1)}</a>
       <h2>{site.title}</h2><p class="andromeda-handle"><AndromedaIcon name="at" /> {andromeda.handle}</p>
@@ -58,7 +58,10 @@ const feedHref = themeHref('/feed/', previewTheme);
           ))}
         </dl>
       )}
-      <nav aria-label="전체 메뉴">{!navigation.items.some((item) => item.href === '/') && <a href={homeHref}>홈</a>}{navigation.items.map((item) => <a href={themeHref(item.href, previewTheme)}>{item.label}</a>)}<a href="/rss.xml">RSS</a></nav>
+      <nav aria-label="전체 메뉴">
+        {!navigation.items.some((item) => item.href === '/') && <a href={homeHref}>홈</a>}
+        {navigation.items.map((item) => <a href={themeHref(item.href, previewTheme)}>{item.label}</a>)}
+      </nav>
     </div>
   </dialog>
 </div>

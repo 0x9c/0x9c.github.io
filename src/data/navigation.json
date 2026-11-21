@@ -1,12 +1,20 @@
 {
   "items": [
     {
-      "label": "글",
+      "label": "Home",
       "href": "/"
     },
     {
-      "label": "소개",
-      "href": "/about/"
+      "label": "Computer",
+      "href": "/tagged/computer/"
+    },
+    {
+      "label": "Sound",
+      "href": "/tagged/sound/"
+    },
+    {
+      "label": "Photo",
+      "href": "/tagged/photo/"
     }
   ]
 }

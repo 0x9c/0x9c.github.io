@@ -2,26 +2,30 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostList from './PostList.astro';
 import site from '../data/site.json';
-import { formatDate, getPostCover, getPublishedPosts } from '../utils/posts';
+import { formatDate, getPostCover, getPublishedPosts, type PostTopic } from '../utils/posts';
 import { findTheme, themeHref, type ThemeId } from '../utils/themes';
 
 interface Props {
   previewTheme?: ThemeId;
+  topic?: PostTopic;
 }
 
-const { previewTheme } = Astro.props;
-const posts = await getPublishedPosts();
+const { previewTheme, topic } = Astro.props;
+const posts = await getPublishedPosts(topic);
 const theme = previewTheme ?? site.theme;
 const journalHeading = theme !== 'astro-blog' && theme !== 'astro-paper';
+const heading = topic ?? '모든 기록';
+const introduction = topic ? undefined : '생각하고, 배우고, 발견한 것들을 모았습니다.';
+const title = topic ?? (previewTheme && `${findTheme(previewTheme).name} 미리보기`);
 ---
 
-<BaseLayout title={previewTheme && `${findTheme(previewTheme).name} 미리보기`} theme={previewTheme} noindex={!!previewTheme}>
+<BaseLayout title={title} description={topic && `${topic} 주제의 글 목록`} theme={previewTheme} noindex={!!previewTheme}>
   {theme === 'andromeda' ? (
-    <section class="andromeda-post" data-andromeda-index aria-labelledby="index-title">
+    <section class="andromeda-post" data-andromeda-index={topic ? undefined : ''} aria-labelledby="index-title">
       <header class="andromeda-post-body index-heading">
-        <h1 id="index-title">모든 기록</h1>
+        <h1 id="index-title">{heading}</h1>
         <span>{posts.length}개의 기록</span>
-        <p>생각하고, 배우고, 발견한 것들을 모았습니다.</p>
+        {introduction && <p>{introduction}</p>}
       </header>
       {posts.length > 0 ? (
         <ul class="index-list">
@@ -47,10 +51,10 @@ const journalHeading = theme !== 'astro-blog' && theme !== 'astro-paper';
     <div class="shell page-shell blog-index">
       <header class="page-heading">
         {journalHeading && <p class="eyebrow">THE JOURNAL</p>}
-        <h1>모든 기록{journalHeading && <span class="brand-dot">.</span>}</h1>
-        <p>생각하고, 배우고, 발견한 것들을 모았습니다.</p>
+        <h1>{heading}{journalHeading && <span class="brand-dot">.</span>}</h1>
+        {introduction && <p>{introduction}</p>}
       </header>
-      <div class="list-heading"><span>전체 글</span><span>{posts.length}개의 기록</span></div>
+      <div class="list-heading"><span>{topic ? '글 목록' : '전체 글'}</span><span>{posts.length}개의 기록</span></div>
       <PostList posts={posts} previewTheme={previewTheme} />
     </div>
   )}

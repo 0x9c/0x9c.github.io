@@ -32,6 +32,13 @@ content:
         required: true
         options:
           format: yyyy-MM-dd
+      - name: tags
+        label: 글 주제
+        description: 선택한 주제의 글 목록에 이 글이 표시됩니다.
+        type: select
+        options:
+          multiple: true
+          values: [Computer, Sound, Photo]
       - name: cover
         label: 대표 사진
         type: image

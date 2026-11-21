@@ -223,6 +223,7 @@ content:
             type: string
           - name: icon
             label: 아이콘
+            description: 비워 두면 기본 프로필 항목은 이름에 맞는 아이콘을 사용합니다.
             type: select
             options:
               values:

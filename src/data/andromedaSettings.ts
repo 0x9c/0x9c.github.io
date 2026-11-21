@@ -22,12 +22,21 @@ const fontStacks: Record<string, string> = {
   mono: 'monospace',
 };
 
-const detailIcons = ['user', 'balloon', 'planet', 'pin', 'heart', 'music'] as const;
+const detailIcons = [
+  { label: '이름', name: 'user' },
+  { label: '생일', name: 'balloon' },
+  { label: '별자리', name: 'planet' },
+  { label: '지역', name: 'pin' },
+  { label: '대명사', name: 'heart' },
+  { label: '관심사', name: 'music' },
+] as const;
 const details = (settings.andromedaDetails ?? []).flatMap((entry) => {
   const value = entry?.value?.trim();
   if (!value) return [];
-  const icon = detailIcons.find((name) => name === entry.icon);
-  return [{ value, label: entry.label?.trim() || '프로필 정보', icon }];
+  const label = entry.label?.trim() || '프로필 정보';
+  const icon = detailIcons.find((item) => item.name === entry.icon)
+    ?? detailIcons.find((item) => item.label === label);
+  return [{ value, label, icon: icon?.name }];
 });
 
 export const andromeda = {

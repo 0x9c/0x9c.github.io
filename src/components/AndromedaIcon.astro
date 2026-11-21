@@ -1,6 +1,7 @@
 ---
 interface Props {
-  name: 'search' | 'home' | 'archive' | 'menu' | 'close' | 'at' | 'arrow-left' | 'arrow-right' | 'sparkle';
+  name: 'search' | 'home' | 'archive' | 'menu' | 'close' | 'at' | 'arrow-left' | 'arrow-right' | 'sparkle'
+    | 'user' | 'balloon' | 'planet' | 'pin' | 'heart' | 'music';
 }
 const { name } = Astro.props;
 ---
@@ -13,6 +14,28 @@ const { name } = Astro.props;
   {name === 'menu' && <><path d="M4 4h6v6h-6l0 -6" /><path d="M14 4h6v6h-6l0 -6" /><path d="M4 14h6v6h-6l0 -6" /><path d="M14 17a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /></>}
   {name === 'close' && <><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></>}
   {name === 'at' && <><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M16 12v1.5a2.5 2.5 0 0 0 5 0v-1.5a9 9 0 1 0 -5.5 8.28" /></>}
+  {name === 'user' && <>
+    <circle cx="12" cy="7" r="3.75" />
+    <path d="M5.5 21v-1.5a5 5 0 0 1 5-5h3a5 5 0 0 1 5 5V21" />
+  </>}
+  {name === 'balloon' && <>
+    <ellipse cx="12.5" cy="9.5" rx="6" ry="7.5" />
+    <path d="M10 7a3 3 0 0 1 2-2m.5 12v1.5c0 1.5-1 2.5-3 2.5-1.5 0-2.5.3-3 1" />
+  </>}
+  {name === 'planet' && <>
+    <circle cx="12" cy="12" r="6.5" />
+    <path d="M6.7 7.9c-2.3-.6-4-.6-4.5.2-.9 1.6 2.7 5.2 8.1 8s10.6 3.8 11.5 2.2c.5-.9-.6-2.6-2.8-4.4" />
+  </>}
+  {name === 'pin' && <>
+    <path d="M19.5 9.5c0 5-7.5 12-7.5 12s-7.5-7-7.5-12a7.5 7.5 0 1 1 15 0Z" />
+    <circle cx="12" cy="9.5" r="2.5" />
+  </>}
+  {name === 'heart' && <path d="M20.5 5.5a5 5 0 0 0-7 0L12 7l-1.5-1.5a5 5 0 0 0-7 7L12 21l8.5-8.5a5 5 0 0 0 0-7Z" />}
+  {name === 'music' && <>
+    <path d="M8.5 17.5V5l12-2v12.5M8.5 9l12-2" />
+    <ellipse cx="5.5" cy="17.5" rx="3" ry="2.5" />
+    <ellipse cx="17.5" cy="15.5" rx="3" ry="2.5" />
+  </>}
   {name === 'arrow-left' && <><path d="M5 12l14 0" /><path d="M5 12l6 6" /><path d="M5 12l6 -6" /></>}
   {name === 'arrow-right' && <><path d="M5 12l14 0" /><path d="M13 18l6 -6" /><path d="M13 6l6 6" /></>}
   {name === 'sparkle' && <path d="M12 2.5c.55 5.2 2.3 7.6 7.5 9.5-5.2.55-6.95 2.3-7.5 9.5C10.1 16.3 8.35 14.55 3.5 12 8.7 10.1 10.45 7.7 12 2.5Z" fill="currentColor" stroke="none" />}

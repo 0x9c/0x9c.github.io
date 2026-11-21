@@ -135,7 +135,7 @@ html[data-theme='andromeda']::-webkit-scrollbar-thumb,
 .andromeda-footer a:hover { color:var(--a-accent); }
 html:has(.andromeda-drawer[open]) { overflow:hidden; }
 .andromeda-drawer {
-  position:fixed; inset:0 auto 0 0; width:min(500px, 90vw); height:100%; max-height:none; max-width:none;
+  position:fixed; inset:0 auto 0 0; width:min(720px, 90vw); height:100%; max-height:none; max-width:none;
   margin:0; padding:0; overflow-y:auto; overscroll-behavior:contain; border:0; border-right:1px solid var(--a-border);
   background:var(--a-card); color:var(--a-text); font:inherit; box-shadow:0 0 40px #0008;
   transform:translateX(-100%); transition:transform .25s ease, overlay .25s allow-discrete, display .25s allow-discrete;
@@ -150,10 +150,20 @@ html:has(.andromeda-drawer[open]) { overflow:hidden; }
 .andromeda-drawer-content { padding:0 50px 50px; }
 .andromeda-drawer-content .andromeda-avatar { margin:0; }
 .andromeda-drawer-content > p:not(.andromeda-handle) { margin:20px 0; color:var(--a-muted); }
-.andromeda-drawer dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 22px; margin:30px 0; padding:25px 0; border-top:1px solid var(--a-border); border-bottom:1px solid var(--a-border); font-size:.9em; }
-.andromeda-drawer dl div { min-width:0; }
-.andromeda-drawer dt { color:var(--a-muted); }
-.andromeda-drawer dd { margin:0; overflow-wrap:anywhere; }
+.andromeda-profile-details {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px 22px;
+  margin:42px 0 0;
+  padding:36px 0 30px;
+  border-block:1px solid var(--a-border);
+}
+.andromeda-profile-details > div { position:relative; min-width:0; }
+.andromeda-profile-details dt { color:var(--a-muted); font-size:.85em; overflow-wrap:anywhere; }
+.andromeda-profile-details .detail-label-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.andromeda-profile-details dd { display:flex; align-items:baseline; gap:10px; margin:0; }
+.andromeda-profile-details dd span { min-width:0; overflow-wrap:anywhere; }
+.andromeda-profile-details .andromeda-icon { align-self:flex-start; width:1em; height:1em; margin-top:.3em; color:#72b8e0; }
 .andromeda-drawer nav { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 20px; margin-top:25px; }
 .andromeda-drawer-search { display:none; }
 .andromeda-theme .preview-bar { border:1px solid var(--a-border); border-radius:5px; background:var(--a-card); }
@@ -166,5 +176,8 @@ html:has(.andromeda-drawer[open]) { overflow:hidden; }
   .andromeda-drawer-search { display:flex; width:100%; margin:0 0 24px; }
   .andromeda-close { margin:35px 30px 30px; }
   .andromeda-drawer-content { padding:0 30px 40px; }
+}
+@media (max-width:480px) {
+  .andromeda-profile-details { grid-template-columns:1fr; margin-top:28px; padding-block:24px; }
 }
 @media (prefers-reduced-motion:reduce) { .andromeda-drawer { transition:none; } }

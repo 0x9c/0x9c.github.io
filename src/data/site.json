@@ -9,5 +9,13 @@
   "andromedaSidebarSide": "left",
   "andromedaPostWidth": "540",
   "andromedaFontSize": 16,
-  "andromedaFontFamily": "sans"
+  "andromedaFontFamily": "sans",
+  "andromedaDetails": [
+    { "label": "이름", "icon": "user", "value": "" },
+    { "label": "생일", "icon": "balloon", "value": "" },
+    { "label": "별자리", "icon": "planet", "value": "" },
+    { "label": "지역", "icon": "pin", "value": "" },
+    { "label": "대명사", "icon": "heart", "value": "" },
+    { "label": "관심사", "icon": "music", "value": "" }
+  ]
 }

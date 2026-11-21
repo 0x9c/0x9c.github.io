@@ -48,7 +48,16 @@ const feedHref = themeHref('/feed/', previewTheme);
       </form>
       <a class="andromeda-avatar" href={homeHref} aria-label={`${site.title} 홈`}>{andromeda.avatar ? <img src={andromeda.avatar} alt="" /> : site.title.slice(0, 1)}</a>
       <h2>{site.title}</h2><p class="andromeda-handle"><AndromedaIcon name="at" /> {andromeda.handle}</p>
-      {andromeda.details.length > 0 && <dl>{andromeda.details.map((detail) => <div><dt>{detail.label}</dt><dd>{detail.value}</dd></div>)}</dl>}
+      {andromeda.details.length > 0 && (
+        <dl class="andromeda-profile-details" aria-label="프로필 정보">
+          {andromeda.details.map(({ label, value, icon }) => (
+            <div title={label}>
+              <dt class:list={{ 'detail-label-hidden': !!icon }}>{label}</dt>
+              <dd><AndromedaIcon name={icon ?? 'sparkle'} /><span>{value}</span></dd>
+            </div>
+          ))}
+        </dl>
+      )}
       <nav aria-label="전체 메뉴">{!navigation.items.some((item) => item.href === '/') && <a href={homeHref}>홈</a>}{navigation.items.map((item) => <a href={themeHref(item.href, previewTheme)}>{item.label}</a>)}<a href="/rss.xml">RSS</a></nav>
     </div>
   </dialog>

@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import HomeContent from '../../../components/HomeContent.astro';
+import { themes } from '../../../utils/themes';
+
+export function getStaticPaths() {
+  return themes.map(({ id }) => ({ params: { theme: id }, props: { previewTheme: id } }));
+}
+
+const { previewTheme } = Astro.props;
+---
+
+<BaseLayout title="피드" theme={previewTheme} noindex>
+  <HomeContent previewTheme={previewTheme} />
+</BaseLayout>

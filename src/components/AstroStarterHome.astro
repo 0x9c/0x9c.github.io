@@ -22,7 +22,7 @@ const posts = await getPublishedPosts();
   <section class="astro-starter-posts" aria-labelledby="astro-starter-recent">
     <div class="astro-starter-section-heading">
       <h2 id="astro-starter-recent">최근 글</h2>
-      <a href={themeHref('/blog/', previewTheme)}>모든 글 보기</a>
+      <a href={themeHref('/', previewTheme)}>모든 글 보기</a>
     </div>
     {posts.length ? (
       <ul class="astro-starter-grid">

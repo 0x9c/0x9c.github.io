@@ -1,5 +1,5 @@
 ---
-import BlogIndexPage from '../../../../components/BlogIndexPage.astro';
+import BlogIndexRedirect from '../../../../components/BlogIndexRedirect.astro';
 import { themes } from '../../../../utils/themes';
 
 export function getStaticPaths() {
@@ -7,4 +7,4 @@ export function getStaticPaths() {
 }
 ---
 
-<BlogIndexPage previewTheme={Astro.props.previewTheme} />
+<BlogIndexRedirect previewTheme={Astro.props.previewTheme} />

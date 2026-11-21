@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostList from './PostList.astro';
 import site from '../data/site.json';
 import { formatDate, getPostCover, getPublishedPosts } from '../utils/posts';
-import { themeHref, type ThemeId } from '../utils/themes';
+import { findTheme, themeHref, type ThemeId } from '../utils/themes';
 
 interface Props {
   previewTheme?: ThemeId;
@@ -15,9 +15,9 @@ const theme = previewTheme ?? site.theme;
 const journalHeading = theme !== 'astro-blog' && theme !== 'astro-paper';
 ---
 
-<BaseLayout title="글" description="차곡차곡 모아둔 기록들입니다." theme={previewTheme} noindex={!!previewTheme}>
+<BaseLayout title={previewTheme && `${findTheme(previewTheme).name} 미리보기`} theme={previewTheme} noindex={!!previewTheme}>
   {theme === 'andromeda' ? (
-    <section class="andromeda-post" aria-labelledby="index-title">
+    <section class="andromeda-post" data-andromeda-index aria-labelledby="index-title">
       <header class="andromeda-post-body index-heading">
         <h1 id="index-title">모든 기록</h1>
         <span>{posts.length}개의 기록</span>

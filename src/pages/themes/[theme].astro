@@ -1,15 +1,10 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import HomeContent from '../../components/HomeContent.astro';
+import BlogIndexPage from '../../components/BlogIndexPage.astro';
 import { themes } from '../../utils/themes';
 
 export function getStaticPaths() {
-  return themes.map((theme) => ({ params: { theme: theme.id }, props: { theme } }));
+  return themes.map(({ id }) => ({ params: { theme: id }, props: { previewTheme: id } }));
 }
-
-const { theme } = Astro.props;
 ---
 
-<BaseLayout title={`${theme.name} 미리보기`} theme={theme.id} noindex>
-  <HomeContent previewTheme={theme.id} />
-</BaseLayout>
+<BlogIndexPage previewTheme={Astro.props.previewTheme} />

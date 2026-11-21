@@ -1,0 +1,30 @@
+---
+import { themeHref, type ThemeId } from '../utils/themes';
+
+interface Props {
+  previewTheme?: ThemeId;
+}
+
+const target = themeHref('/', Astro.props.previewTheme);
+const canonical = new URL('/', Astro.site);
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+    <title>글 목록으로 이동</title>
+    <script define:vars={{ target }}>
+      const next = new URL(window.location.href);
+      next.pathname = target;
+      window.location.replace(next.href);
+    </script>
+    <noscript><meta http-equiv="refresh" content={`0;url=${target}`} /></noscript>
+  </head>
+  <body>
+    <p><a href={target}>글 목록으로 이동</a></p>
+  </body>
+</html>

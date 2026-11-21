@@ -13,7 +13,7 @@ interface Props {
 }
 const { theme, previewTheme } = Astro.props;
 const activeTheme = findTheme(previewTheme ?? theme ?? site.theme).id;
-const postsHref = themeHref('/blog/', previewTheme);
+const postsHref = themeHref('/', previewTheme);
 const posts = await getPublishedPosts();
 ---
 

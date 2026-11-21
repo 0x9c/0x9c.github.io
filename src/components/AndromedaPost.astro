@@ -52,7 +52,7 @@ const date = pubDate.toISOString();
       ? <time class="andromeda-post-date" datetime={date}>{formatDate(pubDate)}</time>
       : <a class="andromeda-post-date" href={href}><time datetime={date}>{formatDate(pubDate)}</time></a>}
     {detail
-      ? <a class="andromeda-read-link" href={themeHref('/blog/', previewTheme)}>글 목록으로</a>
+      ? <a class="andromeda-read-link" href={themeHref('/', previewTheme)}>글 목록으로</a>
       : <a class="andromeda-read-link" href={href}>글 자세히 보기</a>}
   </footer>
 </article>

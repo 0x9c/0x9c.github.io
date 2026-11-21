@@ -61,7 +61,7 @@ const socialImage = image && Astro.site ? new URL(image, Astro.site).href : unde
         </a>
         <nav class="main-nav" aria-label="주 메뉴">
           {navigation.items.map((item) => {
-            const active = item.href.startsWith('/') && (path === item.href || (item.href !== '/' && path.startsWith(item.href)));
+            const active = item.href === '/' ? path === '/' || path.startsWith('/blog/') : item.href.startsWith('/') && path.startsWith(item.href);
             return <a href={themeHref(item.href, previewTheme)} aria-current={active ? 'page' : undefined}>{item.label}</a>;
           })}
         </nav>

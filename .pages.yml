@@ -141,11 +141,11 @@ content:
         type: text
         required: true
       - name: headline
-        label: 첫 화면 제목
+        label: 피드 제목
         type: string
         required: true
       - name: introduction
-        label: 첫 화면 소개
+        label: 피드 소개
         type: text
         required: true
       - name: andromedaHandle

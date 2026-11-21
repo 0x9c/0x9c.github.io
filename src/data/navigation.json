@@ -2,7 +2,7 @@
   "items": [
     {
       "label": "글",
-      "href": "/blog/"
+      "href": "/"
     },
     {
       "label": "소개",

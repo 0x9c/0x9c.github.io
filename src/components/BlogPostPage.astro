@@ -17,7 +17,7 @@ const { post, previewTheme } = Astro.props;
 const theme = previewTheme ?? site.theme;
 const isAstroTheme = theme === 'astro-blog' || theme === 'astro-paper';
 const cover = getPostCover(post, theme);
-const blogUrl = themeHref('/blog/', previewTheme);
+const blogUrl = themeHref('/', previewTheme);
 const { Content } = await render(post);
 ---
 

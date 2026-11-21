@@ -44,6 +44,7 @@ const socialImage = image && Astro.site ? new URL(image, Astro.site).href : unde
     <meta name="theme-color" content={theme.color} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {(theme.id === 'andromeda' || path === '/themes/') && <link rel="stylesheet" href="/profile-avatar.css" />}
     <link rel="alternate" type="application/rss+xml" title={`${site.title} RSS`} href="/rss.xml" />
     <title>{pageTitle}</title>
     <LiveTheme />

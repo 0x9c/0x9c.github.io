@@ -75,7 +75,6 @@ html[data-theme='andromeda']::-webkit-scrollbar-thumb,
 .andromeda-banner { width:100%; aspect-ratio:1; border-radius:4px 4px 0 0; background:linear-gradient(147deg,#ff99b8,#72b8e0); background-size:cover; background-position:center; }
 .andromeda-profile-content { padding:0 15px 15px; }
 .andromeda-avatar { position:relative; display:grid; place-items:center; width:70px; height:70px; overflow:hidden; margin-top:-35px; border:5px solid var(--a-card); border-radius:50%; background:#34303d; color:#f4c1d7 !important; font-size:25px; font-weight:700; }
-.andromeda-avatar img { display:block; width:100%; height:100%; object-fit:cover; }
 .andromeda-profile h1, .andromeda-drawer h2 { margin:15px 0 0; color:#fff; font-size:1.15em; line-height:1.6; }
 .andromeda-handle { display:flex; align-items:center; gap:4px; margin:3px 0 0; color:var(--a-muted); }
 .andromeda-handle .andromeda-icon { width:15px; height:15px; color:var(--a-accent); }
@@ -145,7 +144,6 @@ html:has(.andromeda-drawer[open]) { overflow:hidden; }
 .andromeda-close span:first-child { display:grid; place-items:center; width:35px; height:35px; border:1px solid var(--a-border); border-radius:50%; background:var(--a-bg); }
 .andromeda-drawer-content { padding:0 50px 50px; }
 .andromeda-drawer-content .andromeda-avatar { margin:0; padding:5px; border:1px solid var(--a-border); background:var(--a-card); }
-.andromeda-drawer-content .andromeda-avatar img { border-radius:50%; }
 .andromeda-drawer h2 { margin-top:20px; }
 .andromeda-drawer .andromeda-handle { margin:0; gap:5px; line-height:1.75; color:var(--a-text); }
 .andromeda-profile-details {

@@ -4,6 +4,7 @@ import site from '../data/site.json';
 import { andromeda } from '../data/andromedaSettings';
 import navigation from '../data/navigation.json';
 import AndromedaIcon from './AndromedaIcon.astro';
+import ProfileAvatar from './ProfileAvatar.astro';
 import ProfileIntro from './ProfileIntro.astro';
 import '../styles/andromeda.css';
 import '../styles/andromeda-shell.css';
@@ -37,7 +38,7 @@ const AboutBody = about && (await render(about)).Content;
         <div class="andromeda-banner">
           {andromeda.banner && <img src={andromeda.banner} alt="" />}
         </div>
-        <a class="andromeda-avatar" href={homeHref} aria-label={`${site.title} 홈`}>{andromeda.avatar ? <img src={andromeda.avatar} alt="" /> : site.title.slice(0, 1)}</a>
+        <a class="andromeda-avatar" href={homeHref} aria-label={`${site.title} 홈`}><ProfileAvatar /></a>
         <div class="andromeda-profile-content">
           <a class="andromeda-profile-identity" href={homeHref}>
             <h1>{site.title}</h1>
@@ -58,7 +59,7 @@ const AboutBody = about && (await render(about)).Content;
       <form class="andromeda-search andromeda-drawer-search" data-andromeda-search role="search" action={feedHref}>
         <input type="search" name="q" placeholder="검색어를 입력하세요" aria-label="글 검색" />
       </form>
-      <a class="andromeda-avatar" href={homeHref} aria-label={`${site.title} 홈`}>{andromeda.avatar ? <img src={andromeda.avatar} alt="" /> : site.title.slice(0, 1)}</a>
+      <a class="andromeda-avatar" href={homeHref} aria-label={`${site.title} 홈`}><ProfileAvatar /></a>
       <h2>{site.title}</h2><p class="andromeda-handle"><AndromedaIcon name="at" /> {andromeda.handle}</p>
       {andromeda.details.length > 0 && (
         <dl class="andromeda-profile-details" aria-label="프로필 정보">

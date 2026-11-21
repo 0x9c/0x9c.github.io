@@ -1,0 +1,14 @@
+---
+import site from '../data/site.json';
+---
+
+<span class="profile-avatar-face" aria-hidden="true">{site.title.slice(0, 1)}</span>
+
+<style>
+  .profile-avatar-face {
+    display: grid;
+    place-self: stretch;
+    place-items: center;
+    border-radius: 50%;
+  }
+</style>

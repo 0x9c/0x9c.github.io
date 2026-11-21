@@ -1,0 +1,40 @@
+---
+import { defaultTreeAdapter as tree, parseFragment, type DefaultTreeAdapterTypes } from 'parse5';
+import site from '../data/site.json';
+import { themeHref, type ThemeId } from '../utils/themes';
+
+interface Props {
+  previewTheme?: ThemeId;
+}
+const { previewTheme } = Astro.props;
+const aboutUrl = new URL('/about/', Astro.site ?? Astro.url);
+const aboutHref = themeHref(aboutUrl.pathname, previewTheme);
+const document = parseFragment(await Astro.slots.render('default'));
+const paragraph = document.childNodes.find((node) => tree.isElementNode(node) && node.tagName === 'p');
+
+type Part = { text: string; href?: string };
+function readInline(nodes: DefaultTreeAdapterTypes.ChildNode[]): Part[] {
+  return nodes.flatMap((node): Part[] => {
+    if (tree.isTextNode(node)) return [{ text: node.value }];
+    if (!tree.isElementNode(node) || ['script', 'style', 'template'].includes(node.tagName)) return [];
+    if (node.tagName === 'br') return [{ text: ' ' }];
+    const children = readInline(node.childNodes);
+    if (node.tagName !== 'a') return children;
+    const href = node.attrs.find((attribute) => attribute.name === 'href')?.value;
+    const url = href && URL.parse(href, aboutUrl);
+    if (!url || !['https:', 'http:', 'mailto:', 'tel:'].includes(url.protocol)) return children;
+    const target = url.origin === aboutUrl.origin
+      ? themeHref(url.pathname + url.search + url.hash, previewTheme)
+      : url.href;
+    return [{ text: children.map((part) => part.text).join(''), href: target }];
+  });
+}
+
+const excerpt = paragraph && tree.isElementNode(paragraph) ? readInline(paragraph.childNodes) : [];
+---
+<div class="andromeda-profile-description">
+  <p>{excerpt.some((part) => part.text.trim())
+    ? excerpt.map((part) => part.href ? <a href={part.href}>{part.text}</a> : part.text)
+    : site.description}</p>
+  {Astro.url.pathname !== aboutHref && <a href={aboutHref}>자기소개</a>}
+</div>

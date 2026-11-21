@@ -59,16 +59,11 @@
   color: #ff99b8;
 }
 
-.andromeda-profile .andromeda-profile-links { overflow-wrap: anywhere; }
-.andromeda-profile-links dt { margin-bottom: 1em; font-weight: 700; }
-.andromeda-profile-links dt:not(:first-child) { margin-top: 1em; }
-.andromeda-profile-links dd { margin: 0; }
-.andromeda-profile-links a {
-  border-bottom: 1px solid;
-  border-image: linear-gradient(147deg, #ff99b8, #72b8e0) 1;
-  color: white;
-}
-.andromeda-profile-links a:hover { color: rgb(255 255 255 / 75%); }
+.andromeda-profile-description { overflow-wrap: anywhere; }
+.andromeda-profile-description p { margin: 0; }
+.andromeda-profile-description p + a { display: inline-block; margin-top: .5em; }
+.andromeda-profile-description a { color: white; text-decoration: underline; text-underline-offset: .18em; }
+.andromeda-profile-description a:hover { color: var(--a-accent); }
 
 @media (max-width: 1020px) {
   .andromeda-theme .andromeda-shell { width: 100%; }

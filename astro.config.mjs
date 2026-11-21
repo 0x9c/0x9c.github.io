@@ -7,6 +7,6 @@ export default defineConfig({
   build: { inlineStylesheets: 'always' },
   integrations: [sitemap({ filter: (page) => {
     const { pathname } = new URL(page);
-    return pathname !== '/blog/' && !pathname.startsWith('/themes/');
+    return pathname !== '/blog/' && pathname !== '/login/' && !pathname.startsWith('/themes/');
   } })],
 });

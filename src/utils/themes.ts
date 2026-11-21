@@ -47,6 +47,6 @@ export function findTheme(id: unknown) {
 export function themeHref(href: string, previewTheme?: ThemeId): string {
   if (!previewTheme || !href.startsWith('/') || href.startsWith('//')) return href;
   const pathname = href.split(/[?#]/, 1)[0];
-  if (/^\/(?:themes|uploads|fonts|_astro)(?:\/|$)/.test(pathname) || /\.[^/]+$/.test(pathname)) return href;
+  if (/^\/login\/?$/.test(pathname) || /^\/(?:themes|uploads|fonts|_astro)(?:\/|$)/.test(pathname) || /\.[^/]+$/.test(pathname)) return href;
   return `/themes/${previewTheme}${href}`;
 }

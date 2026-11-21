@@ -6,7 +6,7 @@ import '../styles/andromeda.css';
 
 const width = ['400', '450', '500', '540'].includes(String(site.andromedaPostWidth)) ? site.andromedaPostWidth : '540';
 const fontSize = Math.min(24, Math.max(14, Number(site.andromedaFontSize) || 16));
-const handle = Astro.site?.hostname ?? site.title;
+const handle = site.andromedaHandle;
 const settingsUrl = 'https://app.pagescms.org/0x9c/0x9c.github.io/main/file/site';
 const family = site.andromedaFontFamily === 'serif' ? 'Georgia, serif' : site.andromedaFontFamily === 'mono' ? 'monospace' : "Libre Franklin, Noto Sans KR, system-ui, sans-serif";
 const details = Array.isArray(site.andromedaDetails) ? site.andromedaDetails as { label: string; value: string }[] : [];

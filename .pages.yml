@@ -148,6 +148,11 @@ content:
         label: 첫 화면 소개
         type: text
         required: true
+      - name: andromedaHandle
+        label: 안드로메다 프로필 아이디
+        description: '@ 기호를 제외한 아이디를 입력하세요.'
+        type: string
+        required: true
       - name: andromedaAvatar
         label: 안드로메다 프로필 사진
         type: image

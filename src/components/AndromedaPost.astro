@@ -1,0 +1,58 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import site from '../data/site.json';
+import { formatDate, getPostCover } from '../utils/posts';
+import { themeHref, type ThemeId } from '../utils/themes';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  previewTheme?: ThemeId;
+  detail?: boolean;
+}
+
+const { post, previewTheme, detail = false } = Astro.props;
+const { title, description, coverAlt, pubDate, audioUrl } = post.data;
+const path = `/blog/${post.id}/`;
+const href = themeHref(path, previewTheme);
+const cover = getPostCover(post, 'andromeda');
+const gallery = post.data.gallery.filter((image) => image.trim());
+const date = pubDate.toISOString();
+---
+
+<article class="andromeda-post" data-andromeda-post={detail ? undefined : ''} data-entry-path={path}>
+  <header class="andromeda-post-top">
+    <a class="andromeda-post-author" href={themeHref('/', previewTheme)}>{site.title}</a>
+  </header>
+  {cover && (detail || !gallery.length) && (
+    detail
+      ? <div class="andromeda-cover"><img src={cover} alt={coverAlt || ''} /></div>
+      : <a class="andromeda-cover" href={href}><img src={cover} alt={coverAlt || title} /></a>
+  )}
+  {gallery.length > 0 && (
+    <div class:list={['andromeda-gallery', { 'andromeda-gallery-single': gallery.length === 1 }]}>
+      {gallery.map((image, index) => (
+        <a href={image} target="_blank" rel="noopener noreferrer">
+          <img src={image} alt={`${title} 사진 ${index + 1}`} loading="lazy" />
+        </a>
+      ))}
+    </div>
+  )}
+  <div class="andromeda-post-body">
+    {detail ? <h1>{title}</h1> : <h2><a href={href}>{title}</a></h2>}
+    {description && <p class="andromeda-post-description">{description}</p>}
+    {audioUrl && (
+      <audio controls preload="none" src={audioUrl} aria-label={`${title} 오디오`}>
+        <a href={audioUrl}>오디오 파일 열기</a>
+      </audio>
+    )}
+    <div class="prose andromeda-prose"><slot /></div>
+  </div>
+  <footer class="andromeda-post-footer">
+    {detail
+      ? <time class="andromeda-post-date" datetime={date}>{formatDate(pubDate)}</time>
+      : <a class="andromeda-post-date" href={href}><time datetime={date}>{formatDate(pubDate)}</time></a>}
+    {detail
+      ? <a class="andromeda-read-link" href={themeHref('/blog/', previewTheme)}>글 목록으로</a>
+      : <a class="andromeda-read-link" href={href}>글 자세히 보기</a>}
+  </footer>
+</article>
